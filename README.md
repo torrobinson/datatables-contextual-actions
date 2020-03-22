@@ -5,6 +5,8 @@ A homemade DataTables JS extension for adding contextual options to one or many 
 
 ![Button List][ButtonList]
 
+![Button List Icon Only][ButtonListIconOnly]
+
 This will alter your table in the following ways:
 - Right-clicking a row will select it and present the user with a context menu of your actions
 - Selecting any number of rows will present the user with a single row of buttons with your actions
@@ -21,9 +23,11 @@ This will alter your table in the following ways:
     contextMenu:{
         // Whether to show the context menu or not
         enabled: true,
+        
         // The offset from the mouse where the context menu is drawn
         xoffset: -10,
         yoffset: -10,
+        
         // A renderer for the header text in the context menu
         headerRenderer: function(row){
             return row[1] + ' - ' + row[2];
@@ -32,12 +36,19 @@ This will alter your table in the following ways:
     buttonList:{
         // Whether to show the button list or not
         enabled: true,
+        
+        // Whether or not to ONLY show icons in the buttons, with tooltips showing the titles
+        iconOnly: false,
+        
         // Whether to reserve the vertical space for the button list, even if it's not being displayed
         reserveSpace: true,
+        
         // Where to draw the button list on the screen
         buttonContainer: $('#dt-row-buttons'),
+        
         // The spacing (in pixels) between buttons when a divider is present
         dividerSpacing: 10,
+        
         // The default button class to assign buttons
         defaultBootstrapClass: 'btn-light'
     },
@@ -158,3 +169,4 @@ $(document).ready( function () {
 
 [ContextManu]: https://github.com/torrobinson/datatables-contextual-actions/blob/master/resources/context-menu.png "Context Menu"
 [ButtonList]: https://github.com/torrobinson/datatables-contextual-actions/blob/master/resources/buttons.png "Button List"
+[ButtonListIconOnly]: https://github.com/torrobinson/datatables-contextual-actions/blob/master/resources/buttonIconOnly.png "Button List Icon Only"
