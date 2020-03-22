@@ -30,7 +30,23 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options, dtOpt
   	var table = $(dt.container()).find('table');
 
 	// DOM template for a dummy button element that we can use to preserve space in the button container, should it be used
-	var heightPreservationButton = '<!-- Dummy height preservation element --><div class="btn-group" style="width: 0px;opacity: 0.0;"><button class="btn" style="width: 0px;cursor: default !important;">.</button></div>';
+	var dummyContent;
+	if(options.buttonList.iconOnly){
+		// Find the first icon in this list as the dummy
+		var iconsWithButtons = options.items.filter(i => i.iconClass !== undefined && i.iconClass != '');
+		var iconClassToEmulate;
+		if(iconsWithButtons.length > 0){
+			iconClassToEmulate = iconsWithButtons[0].iconClass;
+		}
+		else{
+			iconClassToEmulate = 'fa-eye';
+		}
+	}
+
+	var heightPreservationButton =
+	'<!-- Dummy height preservation element --><div class="btn-group" style="width: 0px;opacity: 0.0;"><button class="btn" style="width: 0px;cursor: default !important;">'
+	+ (options.buttonList.iconOnly ? ('<i class="'+options.iconPrefix+' ' +iconClassToEmulate+'"></i>') : '.') // only simulate button content if we're viewing more than icons
+	+'</button></div>';
 
   	// Default our options
 	if(options === undefined || options === null) options = {};
@@ -43,6 +59,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options, dtOpt
           },
       	buttonList:{
           	enabled: false,
+			iconOnly: false,
 			reserveSpace: true
           },
 		classes: [],
@@ -222,7 +239,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options, dtOpt
 
 				var itemElement = $.parseHTML('<a class="dropdown-item '+item.classes.join(' ')+' '+bootstrapClass+'" style="cursor: pointer;">'+ icon + item.title+'</a>');
 
-				if(typeof item.isDisabled === "function" && item.isDisabled(row)) $(itemElement).addClass('disabled');
+				if(typeof item.isDisabled === "function" && item.isDisabled(row)) $(itemElement).addClass('disabled').css('opacity','0.5');
 
 				// On click, perform the action
 				if(item.confirmation !== undefined){
@@ -295,13 +312,23 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options, dtOpt
 			// Handle options
 			else if(item.type === 'option'){
 				var icon = '';
-
+				var marginRight = options.iconOnly ? '' : 'margin-right:10px;';
 				if(item.iconClass !== undefined && item.icon !== ''){
-					icon = '<i style="margin-right:10px;" class="'+iconPrefix+' '+item.iconClass+'"></i>';
+					icon = '<i style="'+marginRight+'" class="'+iconPrefix+' '+item.iconClass+'"></i>';
 				}
 				var bootstrapClass = (item.bootstrapClass === undefined || item.bootstrapClass.trim === '') ? '' : 'btn-' + item.bootstrapClass;
 				if(bootstrapClass === '') bootstrapClass = options.defaultBootstrapClass;
-				var itemElement = $.parseHTML('<button class="btn '+item.classes.join(' ')+' '+bootstrapClass+'">'+ icon + item.title+'</button>');
+
+				// Build what the user will see in the button
+				var buttonContents = '';
+
+				if(!options.iconOnly) buttonContents = icon + item.title;
+				else buttonContents = icon;
+
+				var title = options.iconOnly ? (item.title+ (rows.length > 1 ? ' ('+rows.length+')' : '')) : '';
+				var itemElement = $.parseHTML('<button class="btn '+item.classes.join(' ')+' '+bootstrapClass+'" title="'+ title +'" >'+ buttonContents +'</button>');
+				// If we're icon- only force immediate and obvious tooltips
+				if(options.iconOnly)$(itemElement).tooltip();
 
 				if(
 					((item.multi === undefined || item.multi === false) && rows.length > 1) // If the item isn't a multi-action and yet there's more than 1 row selected,
@@ -312,8 +339,10 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options, dtOpt
 					$(itemElement).addClass('disabled');
 					$(itemElement).attr('disabled', 'disabled');
 					$(itemElement).css('cursor','not-allowed');
+					$(itemElement).css('opacity','0.5');
 				}
-				else if(rows.length > 1){
+				else if(!options.iconOnly && rows.length > 1){
+					// Add the count of selected rows to the title, if the user doesn't want to just see the icon
 					$(itemElement).append(' ('+rows.length+')');
 				}
 
