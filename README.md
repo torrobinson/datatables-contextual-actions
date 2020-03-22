@@ -17,8 +17,6 @@ This will alter your table in the following ways:
 
 # Configuration:
 ```javascript
-Example Options:
-
 {
     contextMenu:{
         // Whether to show the context menu or not
@@ -128,34 +126,34 @@ Example Options:
 ```
 
 # Initialization:
-Initialization requires 2 things: your ccontextualActions configiration as described above, and your DataTables configuration, to ensure any existing options are persisted.
+Initialization requires 2 things: your contextualActions configiration as described above, and your DataTables configuration, to ensure any existing options are persisted.
 
 For example:
 ```javascript
 $(document).ready( function () {
-                // Set up our table in standard DataTables fashion
-                var dataTablesOptions = {
-                    columnDefs: [
-                        {
-                            orderable: false,
-                            className: 'select-checkbox',
-                            targets:   0
-                        },
-                    ],
-                    select: {
-                        style:    'os',
-                        selector: 'td:first-child'
-                    }
-                };
-                var myTable = $('#dt').DataTable(dataTablesOptions);
+    // Set up our table in standard DataTables fashion
+    var dataTablesOptions = {
+        columnDefs: [
+            {
+                orderable: false,
+                className: 'select-checkbox',
+                targets:   0
+            },
+        ],
+        select: {
+            style:    'os',
+            selector: 'td:first-child'
+        }
+    };
+    var myTable = $('#dt').DataTable(dataTablesOptions);
 
 
-                // Then set up some action options
-                var actionOptions = {}; // refer to the configuration section above
+    // Then set up some action options
+    var actionOptions = {}; // refer to the configuration section above
 
-                // And initialize our plugin
-                myTable.contextualActions(actionOptions,dataTablesOptions);
-            });
+    // And initialize our plugin
+    myTable.contextualActions(actionOptions,dataTablesOptions);
+});
 ```
 
 [ContextManu]: https://github.com/torrobinson/datatables-contextual-actions/blob/master/resources/context-menu.png "Context Menu"
