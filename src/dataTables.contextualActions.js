@@ -137,7 +137,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options, dtOpt
 		previousCreateRowCallback(row, data, dataIndex, cells);
    	 };
 
-    // Re-initialize
+    // Re-initialize with our updated options
     dt = $(table).DataTable(dtOptions);
 
    	// Bind to row selection
