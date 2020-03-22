@@ -79,7 +79,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options, dtOpt
 			left: x + options.contextMenu.xoffset
 		});
 
-			// Wait for next tick and then display
+		// Wait for next tick and then display
 		setTimeout(function(){
 			$('#'+contextMenuId).css({
 				display: 'block',
@@ -107,34 +107,34 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options, dtOpt
     dt.destroy();
 
     var previousCreateRowCallback = function(){};
-    if(dtOptions.createdRow !== undefined && typeof(dtOptions.createdRow) === 'function') previousCreateRowCallback = dtOptions.createdRow.bind({});
+    if(dtOptions.createdRow !== undefined && typeof(dtOptions.createdRow) === 'function') previousCreateRowCallback = dtOptions.createdRow.bind({}); // The bind clones the function rather than references it. Otherwise we'd have an endless loop.
 
-    // Set the createdRow override so that when rows are
+    // Set the createdRow override so that when rows are created, we can take over their right-click contextmenu event
     dtOptions.createdRow = function(row, data, dataIndex, cells) {
 
-      	// Bind the row to a right-click context menu invocation
-        $(row).on('contextmenu', function(e){
+		// Bind the row to a right-click context menu invocation
+		$(row).on('contextmenu', function(e){
 
-					if(!options.contextMenu.enabled) return;
+			if(!options.contextMenu.enabled) return;
 
-					// Hide context menu
-					hideContextMenu();
+			// Hide context menu
+			hideContextMenu();
 
-          // Set the current row's data for access elsewhere
-          rightClickedRowData = data;
+			// Set the current row's data for access elsewhere
+			rightClickedRowData = data;
 
-          // Select the row
-          table.DataTable().row($(row)).select();
+			// Select the row
+			table.DataTable().row($(row)).select();
 
-          // Show context menu at mouse position
-          showContextMenuAt(e.pageX, e.pageY);
+			// Show context menu at mouse position
+			showContextMenuAt(e.pageX, e.pageY);
 
-          // Return false to prevent the browser context menu from appearing
-          return false;
-    		});
+			// Return false to prevent the browser context menu from appearing
+			return false;
+		});
 
-        // Run any existing createRow callbacks that the user may have set
-        previousCreateRowCallback(row, data, dataIndex, cells);
+		// Run any existing createRow callbacks that the user may have set
+		previousCreateRowCallback(row, data, dataIndex, cells);
    	 };
 
     // Re-initialize
