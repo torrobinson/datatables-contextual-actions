@@ -619,7 +619,7 @@
                             action: function(rows){
                                 // Change source data and redraw
                                 window.sampleData.filter(data => rows.map(row => row.fullName).includes(data.fullName)).forEach(data => {
-                                    data.role = 'Unassigned';
+                                    data.role = '';
                                     data.location = '';
                                     data.extension = '';
                                     data.startDate = '';
@@ -638,8 +638,8 @@
                             bootstrapClass: 'danger',
                             confirmation: function(rows){ // Bootbox config
                                 var message = rows.length > 1
-                                ? ('Are you sure you want to delete ' + rows.length +' roles?')
-                                : 'Are you sure you want to delete ' + rows[0].fullName + '\'s role?';
+                                ? ('Are you sure you want to delete ' + rows.length +' employees?')
+                                : 'Are you sure you want to delete ' + rows[0].fullName + '?';
                                 return {
                                     title: rows.length > 1 ? 'Delete Employees' : 'Delete Employee',
                                     message: message,
