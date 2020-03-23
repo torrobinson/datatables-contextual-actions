@@ -23,11 +23,11 @@ This will alter your table in the following ways:
     contextMenu:{
         // Whether to show the context menu or not
         enabled: true,
-        
+
         // The offset from the mouse where the context menu is drawn
         xoffset: -10,
         yoffset: -10,
-        
+
         // A renderer for the header text in the context menu
         headerRenderer: function(row){
             return row[1] + ' - ' + row[2];
@@ -36,25 +36,25 @@ This will alter your table in the following ways:
     buttonList:{
         // Whether to show the button list or not
         enabled: true,
-        
+
         // Whether or not to ONLY show icons in the buttons, with tooltips showing the titles
         iconOnly: false,
-        
+
         // Whether to reserve the vertical space for the button list, even if it's not being displayed
         reserveSpace: true,
-        
+
         // Where to draw the button list on the screen
         buttonContainer: $('#dt-row-buttons'),
-        
+
         // The spacing (in pixels) between buttons when a divider is present
         dividerSpacing: 10,
-        
+
         // The default button class to assign buttons
         defaultBootstrapClass: 'btn-light'
     },
     // What prefix class to assign icons
     iconPrefix: 'fa fa-fw',
-    
+
     // Your actions
     items: [
 
@@ -68,7 +68,7 @@ This will alter your table in the following ways:
             // Type is either "divider" or "option"
             type: 'option',
 
-            // The text for your action 
+            // The text for your action
             title: 'Unassign',
 
             // Whether or not it can be clicked/ran when more than 1 row is selected
@@ -112,7 +112,7 @@ This will alter your table in the following ways:
                     }
                 };
             },
-            
+
             // The action to take place on the rows selected. If confirmation (above) is specified, this is only executed if the user confirms the action
             action: function(rows){
                 // Do a bulk operation with rows here
@@ -144,13 +144,6 @@ For example:
 $(document).ready( function () {
     // Set up our table in standard DataTables fashion
     var dataTablesOptions = {
-        columnDefs: [
-            {
-                orderable: false,
-                className: 'select-checkbox',
-                targets:   0
-            },
-        ],
         select: {
             style:    'os',
             selector: 'td:first-child'
@@ -162,8 +155,8 @@ $(document).ready( function () {
     // Then set up some action options
     var actionOptions = {}; // refer to the configuration section above
 
-    // And initialize our plugin
-    myTable.contextualActions(actionOptions,dataTablesOptions);
+    // And initialize our plugin. Since we recreate the table internally, return the modified table as part of initialization.
+    myTable = myTable.contextualActions(actionOptions,dataTablesOptions);
 });
 ```
 
