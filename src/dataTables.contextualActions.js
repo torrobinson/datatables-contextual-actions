@@ -125,7 +125,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options, dtOpt
     // Destroy and reinitialize with some new options to support the plugin
     dt.destroy();
 
-    var previousCreateRowCallback = function(){};
+    var previousCreateRowCallback = null;
     if(dtOptions.createdRow !== undefined && typeof(dtOptions.createdRow) === 'function') previousCreateRowCallback = dtOptions.createdRow.bind({}); // The bind clones the function rather than references it. Otherwise we'd have an endless loop.
 
     // Set the createdRow override so that when rows are created, we can take over their right-click contextmenu event
@@ -153,7 +153,9 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options, dtOpt
 		});
 
 		// Run any existing createRow callbacks that the user may have set
-		previousCreateRowCallback(row, data, dataIndex, cells);
+		if(previousCreateRowCallback !== null){
+			previousCreateRowCallback(row, data, dataIndex, cells);
+		}
    	 };
 
     // Re-initialize with our updated options
@@ -237,7 +239,8 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options, dtOpt
 
 				var bootstrapClass = (item.bootstrapClass === undefined || item.bootstrapClass.trim === '') ? '' : 'text-' + item.bootstrapClass;
 
-				var itemElement = $.parseHTML('<a class="dropdown-item '+item.classes.join(' ')+' '+bootstrapClass+'" style="cursor: pointer;">'+ icon + item.title+'</a>');
+				var extraClasses = item.classes !== undefined ? item.classes.join(' ') : '';
+				var itemElement = $.parseHTML('<a class="dropdown-item '+ extraClasses +' '+bootstrapClass+'" style="cursor: pointer;">'+ icon + item.title+'</a>');
 
 				if(typeof item.isDisabled === "function" && item.isDisabled(row)) $(itemElement).addClass('disabled').css('opacity','0.5');
 
@@ -326,7 +329,8 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options, dtOpt
 				else buttonContents = icon;
 
 				var title = options.iconOnly ? (item.title+ (rows.length > 1 ? ' ('+rows.length+')' : '')) : '';
-				var itemElement = $.parseHTML('<button class="btn '+item.classes.join(' ')+' '+bootstrapClass+'" title="'+ title +'" >'+ buttonContents +'</button>');
+				var extraClasses = item.classes !== undefined ? item.classes.join(' ') : '';
+				var itemElement = $.parseHTML('<button class="btn ' + extraClasses + ' '+bootstrapClass+'" title="'+ title +'" >'+ buttonContents +'</button>');
 				// If we're icon- only force immediate and obvious tooltips
 				if(options.iconOnly)$(itemElement).tooltip();
 
@@ -375,14 +379,17 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options, dtOpt
 		var confirmation = item.confirmation(rows);
 		confirmation.callback = function(confirmed){
 			if(confirmed){
+
 				if(rows.length > 1){
 					for(var i=0; i<rows.length;i++){
 						item.action([rows[i]]);
 					}
 				}
-				else item.action([rows]);
+				else item.action(rows);
 			}
 		};
 		bootbox.confirm(confirmation);
     }
+
+	return dt;
 });
