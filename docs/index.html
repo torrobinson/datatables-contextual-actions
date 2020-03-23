@@ -565,7 +565,7 @@
                             iconClass: 'fa-edit',
                             classes: [],
                             action: function(row){
-                                bootbox.alert('Edit here for row:' + row.fullName );
+                                bootbox.alert('Edit here for ' + row[0].fullName );
                             },
                             isDisabled: function(row){
                                 return row.fullName.charAt(0) === 'A'; // 'A' name's can't edit, for example
@@ -579,7 +579,7 @@
                             iconClass: 'fa-exchange-alt',
                             classes: [],
                             action: function(row){
-                                bootbox.alert('Transfer here for row:' + row.fullName );
+                                bootbox.alert('Transfer here for ' + row[0].fullName );
                             },
                             isHidden: function(row){
                                 return false; // for example
