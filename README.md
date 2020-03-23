@@ -1,4 +1,4 @@
-# datatables-contextual-actions
+# datatables-contextual-actions [View Example](https://torrobinson.github.io/datatables-contextual-actions/)
 A homemade DataTables JS extension for adding contextual options to one or many selected rows.
 
 ![Context Menu][ContextManu]
