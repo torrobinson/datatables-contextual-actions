@@ -379,7 +379,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options, dtOpt
 		var confirmation = item.confirmation(rows);
 		confirmation.callback = function(confirmed){
 			if(confirmed){
-
+				dt.rows().deselect();
 				if(rows.length > 1){
 					for(var i=0; i<rows.length;i++){
 						item.action([rows[i]]);
