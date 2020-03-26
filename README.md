@@ -66,7 +66,7 @@ $(document).ready( function () {
     });
 
     // And initialize our plugin.
-    myTable = myTable.contextualActions({
+    myTable.contextualActions({
         // Configuration options as described above
     });
 });
