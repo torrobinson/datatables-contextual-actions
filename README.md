@@ -3,7 +3,7 @@
 
 A DataTables JS extension for adding contextual options to one or many selected rows.
 
-![Context Menu][ContextManu]
+![Context Menu][ContextMenu]
 
 ![Button List][ButtonList]
 
@@ -20,148 +20,58 @@ This will alter your table in the following ways:
 - [FontAwesome](https://fontawesome.com/)
 
 # Configuration:
-```javascript
-{
-    contextMenu:{
-        // Whether to show the context menu or not
-        enabled: true,
+| Property    | Sub-Property      | Type                           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Default   |
+|-------------|-------------------|--------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
+| classes     |                   | string[]                       | CSS classes to apply to both the dropdown-menu and the button container                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | `[]`      |
+| iconPrefix  |                   | string                         | CSS class that icons will all start with.<br>For example, providing `'fas'` will default an icon to<br>`<i class="fas"></i>`<br><br>...before it's assigned its actual icon class.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `''`      |
+| showSpeed   |                   | string                         | A CSS duration describing how quickly the context menu should be displayed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | `'0.30s'` |
+| contextMenu |                   |                                |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | required  |
+|             | enabled           | bool                           | Whether or not to display a context menu when the user right-clicks a row                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | `true`    |
+|             | xoffset           | int                            | The horizontal distance away, in pixels, to render the drop-down context menu from the mouse                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `-10`     |
+|             | yoffset           | int                            | The vertical distance away, in pixels, to render the drop-down context menu from the mouse                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | `-10`     |
+|             | headerRenderer    | string<br>or<br>function(row)  | What to display as the context menu's header.<br><br>Can be a static string or a function of the <br>right-clicked row.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | `''`      |
+| buttonList  |                   |                                |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | required  |
+|             | enabled           | bool                           | Whether or not to render the options out into an external container as a series of button groups                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `true`    |
+|             | containerSelector | string                         | The CSS selector of the container element that the buttons will be rendered into.<br><br>For example, `'#my-button-bar'`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | required  |
+|             | iconOnly          | bool                           | Whether or not to only display icons in the buttons.<br><br>If `true`, buttons will only contain icons, and the option titles are turned into tooltips.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | `true`    |
+|             | disabledOpacity   | decimal                        | The opacity of a disabled button or context menu icon                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `0.5`     |
+|             | dividerSpacing    | int                            | The number of pixels between divided groups of buttons                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `10`      |
+| items       |                   | item[]                         | An array of `item` objects that represent the options that will be both rendered as buttons, and as options in a context menu.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | required  |
+|             | type              | string                         | <br>Items can be of the following types:<br><br><ul><br><li>`option` is the standard type. It means the option is row-scoped and relies on row data to determine its `action`.</li><br><br><li>`static` means its action will not receive any data, and it mimics a DataTables button in that it is always visible and is table-scoped, not row-scoped.</li><br><br><li>`divider` acts simply as a divider item that splits up the above types when being rendered.</li><br></ul>                                                                                                                                                                                        | required  |
+|             | multi             | bool                           | Whether or not to enable this button when more than 1 rows are selected                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | required  |
+|             | title             | string                         | <br>What the option is named.<br>The title is rendered as:<br><ul><br><li>In buttons: the button text</li><br><li>In buttons when `iconOnly` is `true`: the button's tooltip</li><br><br><li>In context menus: the dropdown option's text</li><br><br><ul>                                                                                                                                                                                                                                                                                                                                                                                                               | required  |
+|             | multiTitle        | string                         | The `title` (above) to render when more than 1 rows are selected                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | See above |
+|             | iconClass         | string                         | The class of the `<i></i>` styled icon to render.<br>For example, if `iconPrefix` is `'fa fa-fw'` and `iconClass` is `'fa-eye'`, then `<i class="fa fa-fw fa-eye"></i>` is rendered.<br><br>Leave blank to render no icon.                                                                                                                                                                                                                                                                                                                                                                                                                                               | `''`      |
+|             | classes           | string[]                       | An array of CSS classes to add onto the rendered item (either the button or the<br>dropdown option)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | `[]`      |
+|             | id                | string                         | Optionally you may assign an id to the item's rendered element if you wish to target it with any custom code                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `''`      |
+|             | bootstrapClass    | string                         | The Bootstrap color class to assign to both buttons or context menu options.<br><br>These include:<br><ul><br><li>primary</li><br><li>secondary</li><br><li>success</li><br><li>danger</li><br><li>warning</li><br><li>info</li><br></ul><br><br>...etc                                                                                                                                                                                                                                                                                                                                                                                                                  | `''`      |
+|             | confirmation      | object<br>or<br>function(rows) | The [Bootbox.js](http://bootboxjs.com/) confirmation configuration object.<br><br><br>**Exclude** the `callback` option, as this plugin hijacks this callback.<br><br>This can either be a static configuration, or a function of the `rows` the action<br>this confirmation is confirming.<br><br>Example:<br><br>`{`<br>`    title: 'Delete Item(s)',`<br>`    message: 'Do you want to delete the item(s)?',`<br>`    buttons: {`<br>`        cancel: {`<br>`            className: 'btn-link',`<br>`            label: 'Cancel'`<br>`        },`<br>`        confirm: {`<br>`            className: 'btn-danger',`<br>`            label: 'Delete'`<br>`   }`<br>`}` | `{}`      |
+|             | action            | function(rows)                 | The action to execute against the 1 or more `rows` selected when the action was executed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | required  |
+|             | isDisabled        | bool<br>or<br>function(row)    | Whether or not to totally disable the option.<br><br>If a function of `row` is provided, this becomes a test to run against every selected row.<br>If ANY of the rows pass this test, the option will be disabled<br><br>For example, to disable the button for "John" rows:<br>`(row) => row.FirstName === 'John'`                                                                                                                                                                                                                                                                                                                                                      | `{}`      |
+|             | isHidden          | bool<br>or<br>function(row)    | Similar to the above `isDisabled` but renders an option hidden/invisible instead of just being disabled (greyed out)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `{}`      |
 
-        // The offset from the mouse where the context menu is drawn
-        xoffset: -10,
-        yoffset: -10,
-
-        // A renderer for the header text in the context menu
-        headerRenderer: function(row){
-            return row[1] + ' - ' + row[2];
-        },
-    },
-    buttonList:{
-        // Whether to show the button list or not
-        enabled: true,
-
-        // Whether or not to ONLY show icons in the buttons, with tooltips showing the titles
-        iconOnly: false,
-
-        // Whether to reserve the vertical space for the button list, even if it's not being displayed
-        reserveSpace: true,
-
-        // Where to draw the button list on the screen
-        buttonContainer: $('#dt-row-buttons'),
-
-        // The spacing (in pixels) between buttons when a divider is present
-        dividerSpacing: 10,
-
-        // The default button class to assign buttons
-        defaultBootstrapClass: 'btn-light'
-    },
-    // What prefix class to assign icons
-    iconPrefix: 'fa fa-fw',
-
-    // Your actions
-    items: [
-
-        // You can add dividers to break up your items into groups,
-        {
-            type: 'divider'
-        },
-
-        // Or specify an action
-        {
-            // Type is either "divider" or "option"
-            type: 'option',
-
-            // The text for your action
-            title: 'Unassign',
-
-            // Whether or not it can be clicked/ran when more than 1 row is selected
-            multi: true,
-
-            // The icon to display before the title
-            iconClass: 'fa-user-alt-slash',
-
-            // Any additional CSS classes to assign to the item
-            classes: [],
-
-            // The bootstrap color class to assign (example: danger, warning, success, etc)
-            bootstrapClass: 'danger',
-
-            // Determine whether to disable the action or not, based on logic on an individual row. If > 1 rows are selected and ANY pass this test, the option will be disabled
-            isDisabled: function(row){
-                return false;
-            },
-
-            // Determine whether to hide / not render the action entirely. If > 1 rows are selected and ANY pass this test, the option will be hidden
-            isHidden: function(row){
-                return false;
-            },
-
-            // Optional bootboxjs confirmation. Specify what you'd normally use in a bootboxjs configuration, except for the callback.
-            // Use the incomine array of rows to determine what you are confirming
-            confirmation: function(rows){
-                var message = 'Are you sure you want to unassign ' + (rows.length > 1 ? (rows.length +' roles?') : rows[0][1] + '\'s role?');
-                return {
-                    title: rows.length > 1 ? 'Unassign Employees' : 'Unassign Employee',
-                    message: message,
-                    buttons: {
-                        cancel: {
-                            className: 'btn-link',
-                            label: 'Cancel'
-                        },
-                        confirm: {
-                            className: 'btn-danger',
-                            label: '<i class="fas fa-user-slash"></i> Unassign'
-                        }
-                    }
-                };
-            },
-
-            // The action to take place on the rows selected. If confirmation (above) is specified, this is only executed if the user confirms the action
-            action: function(rows){
-                // Do a bulk operation with rows here
-                for(var i=0; i<rows.length;i++){
-                    // Or do a singular thing with each row here
-                }
-            }
-        },
-
-        // Example of a simple action:
-        {
-            type: 'option',
-            multi: false,
-            title: 'Edit',
-            iconClass: 'fa-edit',
-            action: function(row){
-                // Show edit screen here
-            }
-        },
-    ]
-}
-```
 
 # Initialization:
-Initialization requires 2 things: your contextualActions configiration as described above, and your DataTables configuration, to ensure any existing options are persisted.
+Initialize with the configuraton object as described above.
 
 For example:
 ```javascript
 $(document).ready( function () {
-    // Set up our table in standard DataTables fashion
-    var dataTablesOptions = {
+    // Set up our table in standard DataTables fashion (with selection enabled)
+    var myTable = $('#dt').DataTable({
         select: {
             style:    'os',
             selector: 'td:first-child'
         }
-    };
-    var myTable = $('#dt').DataTable(dataTablesOptions);
+    });
 
-
-    // Then set up some action options
-    var actionOptions = {}; // refer to the configuration section above
-
-    // And initialize our plugin. Since we recreate the table internally, return the modified table as part of initialization.
-    myTable = myTable.contextualActions(actionOptions,dataTablesOptions);
+    // And initialize our plugin.
+    myTable = myTable.contextualActions({
+        // Configuration options as described above
+    });
 });
 ```
 
-[ContextManu]: https://github.com/torrobinson/datatables-contextual-actions/blob/master/resources/context-menu.png "Context Menu"
+[ContextMenu]: https://github.com/torrobinson/datatables-contextual-actions/blob/master/resources/context-menu.png "Context Menu"
 [ButtonList]: https://github.com/torrobinson/datatables-contextual-actions/blob/master/resources/buttons.png "Button List"
 [ButtonListIconOnly]: https://github.com/torrobinson/datatables-contextual-actions/blob/master/resources/buttonIconOnly.png "Button List Icon Only"
