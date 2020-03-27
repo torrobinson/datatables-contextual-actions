@@ -74,6 +74,25 @@ $(document).ready( function () {
 });
 ```
 
+# Refreshing:
+If you change underlying data that some renderers rely on (`isDisabled` on a `static`-typed action, for example), you can force-update contextualActions like so:
+
+```javascript
+$(document).ready( function () {
+    var myTable = $('#dt').DataTable({
+        // ...
+    });
+
+    // And initialize our plugin.
+    var myContextActions = myTable.contextualActions({
+        // ...
+    });
+
+    // Manually refresh the control and force all actions to be re-evaluated
+    myContextActions.update();
+});
+```
+
 [ContextMenu]: https://github.com/torrobinson/datatables-contextual-actions/blob/master/resources/context-menu.png "Context Menu"
 [ButtonList]: https://github.com/torrobinson/datatables-contextual-actions/blob/master/resources/buttons.png "Button List"
 [ButtonListIconOnly]: https://github.com/torrobinson/datatables-contextual-actions/blob/master/resources/buttonIconOnly.png "Button List Icon Only"

@@ -1,4 +1,4 @@
-﻿/* MIT License
+/* MIT License
 
 Copyright (c) 2020 Tor Robinson
 
@@ -24,12 +24,14 @@ SOFTWARE. */
 
 // Configure our plugin
 jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
+    // Set incoming table that _ca will init() with
+    var table = this.table();
 
-    // Get our table references
-    var dt = this.table();
-    var table = $(dt.container()).find('table');
 
-    // Default our options
+
+
+
+    // Default incoming options
     if (options === undefined || options === null) options = {};
     var defaultOptions = {
         contextMenu: {
@@ -50,48 +52,132 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
         items: [],
         showSpeed: '0.30s'
     };
-
     options = mergeDeep(defaultOptions, options);
-
     if (options.buttonList.enabled && options.buttonList.containerSelector === undefined) {
         throw 'The buttonList.containerSelector option must be specified if the buttonList is enabled, to specify where the buttons will be created';
     }
 
-    // Context menu state
-    var contextMenuId = (table instanceof jQuery ? table.attr('id') : table.id) + '-context-menu';
-    var rightClickedRowData = null;
+    // Set up plugin object
+    var _ca = {
+        dt: null,
+        table: null,
+        contextMenuId: '',
+        rightClickedRowData: '',
+        init: function (options) {
+
+            // Set up references
+            this.dt = table;
+            this.table = $(this.dt.container()).find('table');
+
+            // Ensure that clicks outside of the context menu dismiss it
+            $(window).click(function () {
+                if (
+                    $('#' + _ca.contextMenuId).is(":visible") // If the context menu is visible
+                    && !$(event.target).closest('.dropdown-menu').length // And you're not clicking inside of the context menu
+                ) { hideContextMenu(); } // Then hide it
+            });
+
+            // Context menu state
+            this.contextMenuId = (this.table instanceof jQuery ? this.table.attr('id') : this.table.id) + '-context-menu';
+            this.rightClickedRowData = null;
+
+            var me = this;
+            // Handle row right-clicks
+            $(this.table).on('contextmenu', 'tr', function (e) {
+                var node = this;
+                var data = me.dt.row(node).data();
+
+                if (!options.contextMenu.enabled) return;
+
+                // If this isn't a valid data row (an empty table, for example), then return
+                if (data === undefined) return;
+
+                // Hide context menu
+                hideContextMenu();
+
+                // Set the current row's data for access elsewhere
+                me.rightClickedRowData = data;
+
+
+
+                // Select the row
+                me.dt.row(node).select();
+
+                // Show context menu at mouse position
+                showContextMenuAt(e.pageX, e.pageY);
+
+                // Return false to prevent the browser context menu from appearing
+                return false;
+            });
+
+            // Bind to row selection
+            this.dt.on('select', function (e, dt, type, indexes) {
+                if (type === 'row') {
+                    // Set selected rows
+                    var selectedRowIndexes = dt.rows({ selected: true }).toArray()[0];
+                    var rows = me.table.DataTable().rows(selectedRowIndexes).data().toArray();
+                    refreshButtonsOnSelectionChanged(dt, options, rows);
+                }
+            });
+
+            // Bind to deselection
+            this.dt.on('deselect', function (e, dt, type, indexes) {
+                if (type === 'row') {
+                    var selectedRowIndexes = dt.rows({ selected: true }).toArray()[0];
+                    var rows = me.table.DataTable().rows(selectedRowIndexes).data().toArray();
+                    refreshButtonsOnSelectionChanged(dt, options, rows);
+                }
+            });
+
+            // Immediately try render button list
+            refreshButtonsOnSelectionChanged(this.dt, options, []);
+
+
+        },
+        update: function () {
+            // Force-rerender the buttons
+            var selectedRows = this.dt.rows({ selected: true }).data().toArray();
+            refreshButtonsOnSelectionChanged(this.dt, options, selectedRows);
+        }
+    };
+    // Immediately initialize
+    _ca.init(options);
+
+
+
+
 
     // Hides an open context menu
     function hideContextMenu() {
 
         // Deselect rows
-        table.DataTable().rows().deselect();
+        _ca.table.DataTable().rows().deselect();
 
         // Hide it
-        $('#' + contextMenuId).removeClass('show').hide();
-        rightClickedRowData = null;
+        $('#' + _ca.contextMenuId).removeClass('show').hide();
+        _ca.rightClickedRowData = null;
 
         // Then destroy it
-        destroyContextMenu(contextMenuId);
+        destroyContextMenu(_ca.contextMenuId);
     }
 
     // Shows a context menu at the given offset from current mouse position
     function showContextMenuAt(x, y) {
         // Create the context menu
-        createContextMenu(contextMenuId, options.classes, options.iconPrefix, hideContextMenu, options.items, rightClickedRowData);
+        createContextMenu(_ca.contextMenuId, options.classes, options.iconPrefix, hideContextMenu, options.items, _ca.rightClickedRowData);
 
         // Set its coordinates
-        $("#" + contextMenuId).css({
+        $("#" + _ca.contextMenuId).css({
             top: y + options.contextMenu.yoffset,
             left: x + options.contextMenu.xoffset
         });
 
         // Generate the header for the menu
-        $("#" + contextMenuId).find('.dropdown-header').html(options.contextMenu.headerRenderer(rightClickedRowData));
+        $("#" + _ca.contextMenuId).find('.dropdown-header').html(options.contextMenu.headerRenderer(_ca.rightClickedRowData));
 
         // Wait for next tick and then display
         setTimeout(function () {
-            $('#' + contextMenuId).css({
+            $('#' + _ca.contextMenuId).css({
                 display: 'block',
                 visibility: 'visible',
                 opacity: 1,
@@ -101,64 +187,6 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
             });
         }, 1);
     }
-
-    // Ensure that clicks outside of the context menu dismiss it
-    $(window).click(function () {
-        if (
-            $('#' + contextMenuId).is(":visible") // If the context menu is visible
-            && !$(event.target).closest('.dropdown-menu').length // And you're not clicking inside of the context menu
-        ) { hideContextMenu(); } // Then hide it
-    });
-
-    // Handle row right-clicks
-    $(table).on('contextmenu', 'tr', function (e) {
-        var node = this;
-        var data = dt.row(node).data();
-
-        if (!options.contextMenu.enabled) return;
-
-        // If this isn't a valid data row (an empty table, for example), then return
-        if (data === undefined) return;
-
-        // Hide context menu
-        hideContextMenu();
-
-        // Set the current row's data for access elsewhere
-        rightClickedRowData = data;
-
-
-
-        // Select the row
-        dt.row(node).select();
-
-        // Show context menu at mouse position
-        showContextMenuAt(e.pageX, e.pageY);
-
-        // Return false to prevent the browser context menu from appearing
-        return false;
-    });
-
-    // Bind to row selection
-    dt.on('select', function (e, dt, type, indexes) {
-        if (type === 'row') {
-            // Set selected rows
-            var selectedRowIndexes = dt.rows({ selected: true }).toArray()[0];
-            var rows = table.DataTable().rows(selectedRowIndexes).data().toArray();
-            refreshButtonsOnSelectionChanged(dt, options, rows);
-        }
-    });
-
-    // Bind to deselection
-    dt.on('deselect', function (e, dt, type, indexes) {
-        if (type === 'row') {
-            var selectedRowIndexes = dt.rows({ selected: true }).toArray()[0];
-            var rows = table.DataTable().rows(selectedRowIndexes).data().toArray();
-            refreshButtonsOnSelectionChanged(dt, options, rows);
-        }
-    });
-
-    // Immediately try render button list
-    refreshButtonsOnSelectionChanged(dt, options, []);
 
     // Show or hide the buttons based on row data
     function refreshButtonsOnSelectionChanged(dt, options, rows) {
@@ -211,14 +239,14 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                 // On click, perform the action
                 if (item.confirmation !== undefined) {
                     $(itemElement).click(function () {
-                        dt.rows().deselect();
+                        _ca.dt.rows().deselect();
                         destroyContextMenu(id);
                         onClickWithConfirmation(item, [row], $(itemElement));
                     });
                 }
                 else {
                     $(itemElement).click(function () {
-                        dt.rows().deselect();
+                        _ca.dt.rows().deselect();
                         destroyContextMenu(id);
                         item.action([row], $(itemElement));
                     });
@@ -335,6 +363,8 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                     ((item.multi !== undefined && item.multi === false) && rows.length > 1) // If the item isn't a multi-action and yet there's more than 1 row selected,
                     ||
                     (typeof item.isDisabled === "function" && rows.some(row => item.isDisabled(row))) // Or the item should be disabled,
+                    ||
+                    (item.type === 'static' && typeof item.isDisabled === "function" && item.isDisabled())
                     ;
 
                 if (
@@ -357,7 +387,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                 // On click, perform the action
                 if (item.type === 'static') {
                     $(itemElement).click(function () {
-                        dt.rows().deselect();
+                        _ca.dt.rows().deselect();
                         item.action();
                     });
                 }
@@ -367,7 +397,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                     }
                     else {
                         $(itemElement).click(function () {
-                            dt.rows().deselect();
+                            _ca.dt.rows().deselect();
                             item.action(rows, $(itemElement));
                         });
                     }
@@ -397,7 +427,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
         var confirmation = item.confirmation(rows);
         confirmation.callback = function (confirmed) {
             if (confirmed) {
-                dt.rows().deselect();
+                _ca.dt.rows().deselect();
                 item.action(rows, btn);
             }
         };
@@ -427,4 +457,6 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
         return mergeDeep(target, ...sources);
     }
 
+
+    return _ca;
 });
