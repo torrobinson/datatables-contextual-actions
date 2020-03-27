@@ -75,7 +75,7 @@ $(document).ready( function () {
 ```
 
 # Refreshing:
-If you change underlying data that some renderers rely on (`isDisabled` on a `static`-typed action, for example), you can force-update contextualActions like so:
+If you change underlying data that some renderers rely on (`isDisabled` on a `static`-typed action, for example), and want to update teh controls without having the user manually select/deselect rows, you can force-update contextualActions like so:
 
 ```javascript
 $(document).ready( function () {
