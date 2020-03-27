@@ -23,7 +23,6 @@ This will alter your table in the following ways:
 | Property | Sub-Property | Type | Description | Default |
 |-|-|-|-|-|
 | **classes** | | string[] | CSS classes to apply to both the dropdown-menu and the button container | `[]` |
-| **defaultBootstrapClass**  | | string  | The Bootstrap color class to apply to all buttons by default.<br>Overridden by each `item`'s `bootstrapClass`<br> These include:<br><ul><br><li>primary</li><br><li>secondary</li><br><li>success</li><br><li>danger</li><br><li>warning</li><br><br><li>info</li><br></ul><br>...etc | `''` |
 | **iconPrefix** | | string | CSS class that icons will all start with.<br>For example, providing `'fas'` will default an icon to<br>`<i class="fas"></i>`<br><br>...before it's assigned its actual icon class.  | `''` |
 | **showSpeed**  |  | string | A CSS duration describing how quickly the context menu should be displayed  | `'0.30s'` |
 | **contextMenu**|  |  | | required |
@@ -36,6 +35,7 @@ This will alter your table in the following ways:
 |                | **containerSelector** | string | The CSS selector of the container element that the buttons will be rendered into.<br><br>For example, `'#my-button-bar'` | required  |
 |                | **iconOnly** | bool | Whether or not to only display icons in the buttons.<br><br>If `true`, buttons will only contain icons, and the option titles are turned into tooltips. | `true`    |
 |                | **disabledOpacity**   | decimal  | The opacity of a disabled button or context menu icon | `0.5` |
+|                | **defaultButtonClass** | string  | The class to apply to all buttons by default.<br>Overridden by each `item`'s `bootstrapClass`<br> For example: `'btn-outline-secondary'` to default all unspecified buttons to be grey outlined buttons | `''` |
 |                | **dividerSpacing** | int| The number of pixels between divided groups of buttons  | `10` |
 |                | **buttonsAreOutline** | bool | Whether or not all buttons should be Bootstrap's `outline` style instead. When `true` and combined with an `item`'s `bootStrapClass` like `'primary'` it will yield a `'btn-outline-primary'` button rather than `'btn-primary'`  | `false` |
 | **items**||item[]| An array of `item` objects that represent the options that will be both rendered as buttons, and as options in a context menu. | required  |
