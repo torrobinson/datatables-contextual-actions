@@ -20,16 +20,12 @@
         <!-- Example styling -->
         <style>
             /* Make the buttons stand out on a white background*/
-            #dt-row-buttons{
+            #my-button-container{
               padding: 20px;
-              background-color: #f1f1f1;
             }
         </style>
 
         <script type="text/javascript">
-
-            var myTable;
-
             var sampleData = [
                 {
                   fullName: "Tiger Nixon",
@@ -490,11 +486,12 @@
             ];
 
             $(document).ready( function () {
-                // Set up our table in standard DataTables fashion
-                var dtOptions = {
+
+                // Initialize the table
+                var myTable = $('#dt').DataTable({
                     // Enable selection and make the first column the selection column
                     select: {
-                        style:    'os',
+                        style:    'multi',
                         selector: 'td:first-child'
                     },
                     columns: [
@@ -530,40 +527,62 @@
                             data: 'salary'
                         },
                     ]
-                };
-
-                // Initialize the table
-                myTable = $('#dt').DataTable(dtOptions);
+                });
 
                 // Feed it some json data and redraw
                 myTable.rows.add(sampleData).draw();
 
                 // Then set up some action options
                 var actionOptions = {
+                    iconPrefix: 'fad fa-fw',
+                    classes: ['btn-sm'],
                     contextMenu:{
                         enabled: true,
                         xoffset: -10,
                         yoffset: -10,
                         headerRenderer: function(row){
-                            return row.fullName + ' - ' + row.role;
+                            if(row.role !== '')
+                                return row.fullName + ' (' + row.role + ')';
+                            else
+                                return row.fullName;
                         },
                     },
                     buttonList:{
                         enabled: true,
                         iconOnly: false,
-                        reserveSpace: true,
-                        buttonContainer: $('#dt-row-buttons'),
+                        containerSelector: '#my-button-container',
+                        defaultButtonClass: 'btn-outline-secondary',
+                        disabledOpacity: 0.4,
                         dividerSpacing: 10,
-                        defaultBootstrapClass: 'btn-outline-primary'
+                        buttonsAreOutline: true
                     },
-                    iconPrefix: 'fa fa-fw',
+
                     items: [
+
+
+                        {
+                            type: 'static',
+                            title: 'Static Button',
+                            iconClass: 'fa-lock',
+                            bootstrapClass: 'primary',
+                            classes: ['btn-sm'],
+                            action: function(){
+                                bootbox.alert('I am a static button that doesn\'t care about what row is selected. I\'m always clickable!');
+                            }
+                        },
+
+
+                        {
+                            type: 'divider'
+                        },
+
+
                         {
                             type: 'option',
                             multi: false,
                             title: 'Edit',
                             iconClass: 'fa-edit',
-                            classes: [],
+                            classes: ['btn-sm'],
                             action: function(row){
                                 bootbox.alert('Edit here for ' + row[0].fullName );
                             },
@@ -577,7 +596,7 @@
                             title: 'Transfer',
                             multi: false,
                             iconClass: 'fa-exchange-alt',
-                            classes: [],
+                            classes: ['btn-sm'],
                             action: function(row){
                                 bootbox.alert('Transfer here for ' + row[0].fullName );
                             },
@@ -592,11 +611,17 @@
 
                         {
                             type: 'option',
-                            title: 'Unassign',
+                            title: 'Unassign Employee',
                             multi: true,
+                            multiTitle: 'Unassign Employees',
                             iconClass: 'fa-user-alt-slash',
-                            classes: [],
+                            classes: ['btn-sm'],
                             bootstrapClass: 'danger',
+
+                            isDisabled: (row) => {
+                                return row.role === ''
+                            },
+
                             confirmation: function(rows){
                                 var message = rows.length > 1
                                 ? ('Are you sure you want to unassign ' + rows.length +' roles?')
@@ -631,10 +656,11 @@
 
                         {
                             type: 'option',
-                            title: 'Delete',
+                            title: 'Delete Employee',
                             multi: true,
+                            multiTitle: 'Delete Employees',
                             iconClass: 'fa-trash',
-                            classes: [],
+                            classes: ['btn-sm'],
                             bootstrapClass: 'danger',
                             confirmation: function(rows){ // Bootbox config
                                 var message = rows.length > 1
@@ -665,7 +691,7 @@
                 };
 
                 // And initialize our plugin
-                myTable = myTable.contextualActions(actionOptions,dtOptions);
+                myTable.contextualActions(actionOptions);
             });
         </script>
     </head>
@@ -673,7 +699,7 @@
         <h1>Datatables-contextual-actions Example</h1>
         <!-- This is any custom container we want to use to hold our context buttons -->
         <br/>
-        <div id='dt-row-buttons'></div>
+        <div id='my-button-container'></div>
         <br/>
 
         <table id="dt" class="display" style="width:100%"></table>
