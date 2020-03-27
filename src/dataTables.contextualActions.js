@@ -375,6 +375,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                     $(itemElement).attr('disabled', 'disabled');
                     $(itemElement).css('cursor', 'not-allowed');
                     $(itemElement).css('opacity', options.disabledOpacity);
+                    $(itemElement).removeAttr('title', '');
                 }
                 else if (!options.iconOnly && item.type !== 'static' && rows.length > 1) {
                     // Add the count of selected rows to the title, if the user doesn't want to just see the icon
