@@ -350,7 +350,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                     title = '';
                 }
 
-                var itemElement = $.parseHTML('<button class="btn ' + buttonClasses + '" title="' + title + '" >' + buttonContents + '</button>');
+                var itemElement = $.parseHTML('<button class="btn ' + buttonClasses + '" data-original-title="' + title + '" >' + buttonContents + '</button>');
 
                 if (item.id !== undefined) {
                     $(itemElement).attr('id', item.id);
