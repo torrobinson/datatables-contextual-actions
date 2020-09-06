@@ -17,7 +17,7 @@ This will alter your table in the following ways:
 - [DataTables](https://github.com/DataTables/DataTables)
 - [Bootbox.js](http://bootboxjs.com/)
 - [Bootstrap 4](https://getbootstrap.com/)
-- [FontAwesome](https://fontawesome.com/)
+- [FontAwesome](https://fontawesome.com/) OR any font-icon library that uses the <i></i> element for icons.
 
 # Configuration:
 | Property | Sub-Property | Type | Description | Default |
