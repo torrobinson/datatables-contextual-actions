@@ -1,27 +1,49 @@
 <html>
     <head>
-        <!-- Some dependencies -->
-        <script src="https://kit.fontawesome.com/ce468453a1.js" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.css">
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.js"></script>
+        <!-- Required Libraries -->
+            <!-- jQuery -->
+            <script src="https://code.jquery.com/jquery-3.4.1.slim.js"></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/jquery.dataTables.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+            <!-- DataTables -->
+            <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/jquery.dataTables.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+            <script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
 
-        <script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
+        <!-- Optional libraries-->
+                    <!-- Font Awesome -->
+                    <script src="https://kit.fontawesome.com/ce468453a1.js" crossorigin="anonymous"></script>
 
-        <!-- The plugin -->
-        <script src="../src/dataTables.contextualActions.min.js"></script>
+                    <!-- Boostrap -->
+                    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.js"></script>
+                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.js"></script>
+
+                    <!-- Bootbox -->
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
+
+
+        <!-- The plugin itself -->
+            <script src="../src/dataTables.contextualActions.js"></script>
+            <link rel="stylesheet" href="../src/dataTables.contextualActions.css">
 
         <!-- Example styling -->
         <style>
             /* Make the buttons stand out on a white background*/
             #my-button-container{
               padding: 20px;
+            }
+
+            html{
+                font-family: sans-serif;
+            }
+
+            .text-danger{
+                color: red;
+            }
+            .text-danger:hover{
+                background-color: red;
+                color: white;
             }
         </style>
 
@@ -547,6 +569,11 @@
                                 return row.fullName;
                         },
                     },
+                    // Using bootbox? Customize how you confirm an action
+                    showConfirmationMethod: function(confirmation){
+                        // Rather than using the basic built-in browser confirmation, use Bootbox!
+                        bootbox.confirm(confirmation);
+                    },
                     buttonList:{
                         enabled: true,
                         iconOnly: false,
@@ -662,7 +689,7 @@
                             iconClass: 'fa-trash',
                             classes: ['btn-sm'],
                             bootstrapClass: 'danger',
-                            confirmation: function(rows){ // Bootbox config
+                            confirmation: function(rows){
                                 var message = rows.length > 1
                                 ? ('Are you sure you want to delete ' + rows.length +' employees?')
                                 : 'Are you sure you want to delete ' + rows[0].fullName + '?';

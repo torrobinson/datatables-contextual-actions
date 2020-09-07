@@ -1,3 +1,4 @@
+
 # datatables-contextual-actions
 ## [View Example](https://torrobinson.github.io/datatables-contextual-actions/docs/)
 
@@ -15,9 +16,6 @@ This will alter your table in the following ways:
 
 # Dependencies:
 - [DataTables](https://github.com/DataTables/DataTables)
-- [Bootbox.js](http://bootboxjs.com/)
-- [Bootstrap 4](https://getbootstrap.com/)
-- [FontAwesome](https://fontawesome.com/) OR any font-icon library that uses the <i></i> element for icons.
 
 # Configuration:
 | Property | Sub-Property | Type | Description | Default |
@@ -30,6 +28,7 @@ This will alter your table in the following ways:
 |                | **xoffset**  | int  | The horizontal distance away, in pixels, to render the drop-down context menu from the mouse | `-10` |
 |                | **yoffset** | int| The vertical distance away, in pixels, to render the drop-down context menu from the mouse | `-10` |
 |                | **headerRenderer** | string<br>or<br>function(row)  | What to display as the context menu's header.<br><br>Can be a static string or a function of the <br>right-clicked row. | `''`|
+| **showConfirmationMethod**  |  | function(confirmation)| A function taking in a `confirmation` object (see the documentation on `item`'s `confirmation` attribute) that handles how to render and show the confirmation to the user. By default this uses the super basic `window.confirm` but the incoming `confirmation` parameter matches the config of BootBox, a plugin for showing confirmations using Bootstrap's modals. If using Bootbox, replace with `function(confirmation){bootbox.confirm(confirmation)}`  | `function(confirmation){ confirmation.callback(window.confirm(confirmation.message));}`|
 | **buttonList** |  | |   | required |
 |                | **enabled** | bool | Whether or not to render the options out into an external container as a series of button groups| `true`  |
 |                | **containerSelector** | string | The CSS selector of the container element that the buttons will be rendered into.<br><br>For example, `'#my-button-bar'` | required  |

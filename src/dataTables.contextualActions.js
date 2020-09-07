@@ -50,7 +50,10 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
         classes: [],
         iconPrefix: '',
         items: [],
-        showSpeed: '0.30s'
+        showSpeed: '0.30s',
+        showConfirmationMethod: function(confirmation){
+            confirmation.callback(window.confirm(confirmation.message));
+        }
     };
     options = mergeDeep(defaultOptions, options);
     if (options.buttonList.enabled && options.buttonList.containerSelector === undefined) {
@@ -432,7 +435,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                 item.action(rows, btn);
             }
         };
-        bootbox.confirm(confirmation);
+        options.showConfirmationMethod(confirmation);
     }
 
     // Below 2 functions courtesy of @Salakar https://stackoverflow.com/a/34749873/1669011
