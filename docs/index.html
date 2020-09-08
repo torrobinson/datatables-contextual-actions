@@ -34,8 +34,8 @@
               padding: 20px;
             }
 
-            html{
-                font-family: sans-serif;
+            body{
+                font-family: sans-serif !important;
             }
 
             .text-danger{
@@ -557,7 +557,7 @@
                 // Then set up some action options
                 var actionOptions = {
                     iconPrefix: 'fad fa-fw',
-                    classes: ['btn-sm'],
+                    classes: [],
                     contextMenu:{
                         enabled: true,
                         xoffset: -10,
@@ -570,29 +570,22 @@
                         },
                     },
                     // Using bootbox? Customize how you confirm an action
-                    showConfirmationMethod: function(confirmation){
-                        // Rather than using the basic built-in browser confirmation, use Bootbox!
-                        bootbox.confirm(confirmation);
-                    },
+                    showConfirmationMethod: bootbox.confirm,
                     buttonList:{
                         enabled: true,
                         iconOnly: false,
                         containerSelector: '#my-button-container',
-                        defaultButtonClass: 'btn-outline-secondary',
+                        groupClass: 'btn-group',
                         disabledOpacity: 0.4,
                         dividerSpacing: 10,
-                        buttonsAreOutline: true
                     },
 
                     items: [
-
-
                         {
                             type: 'static',
                             title: 'Static Button',
                             iconClass: 'fa-lock',
-                            bootstrapClass: 'primary',
-                            classes: ['btn-sm'],
+                            buttonClasses: ['btn','btn-outline-primary'],
                             action: function(){
                                 bootbox.alert('I am a static button that doesn\'t care about what row is selected. I\'m always clickable!');
                             }
@@ -609,7 +602,8 @@
                             multi: false,
                             title: 'Edit',
                             iconClass: 'fa-edit',
-                            classes: ['btn-sm'],
+                            buttonClasses: ['btn','btn-outline-secondary'],
+                            contextMenuClasses: ['text-secondary'],
                             action: function(row){
                                 bootbox.alert('Edit here for ' + row[0].fullName );
                             },
@@ -623,7 +617,8 @@
                             title: 'Transfer',
                             multi: false,
                             iconClass: 'fa-exchange-alt',
-                            classes: ['btn-sm'],
+                            buttonClasses: ['btn','btn-outline-secondary'],
+                            contextMenuClasses: ['text-secondary'],
                             action: function(row){
                                 bootbox.alert('Transfer here for ' + row[0].fullName );
                             },
@@ -642,8 +637,8 @@
                             multi: true,
                             multiTitle: 'Unassign Employees',
                             iconClass: 'fa-user-alt-slash',
-                            classes: ['btn-sm'],
-                            bootstrapClass: 'danger',
+                            buttonClasses: ['btn','btn-outline-danger'],
+                            contextMenuClasses: ['text-danger'],
 
                             isDisabled: (row) => {
                                 return row.role === ''
@@ -687,8 +682,8 @@
                             multi: true,
                             multiTitle: 'Delete Employees',
                             iconClass: 'fa-trash',
-                            classes: ['btn-sm'],
-                            bootstrapClass: 'danger',
+                            buttonClasses: ['btn','btn-outline-danger'],
+                            contextMenuClasses: ['text-danger'],
                             confirmation: function(rows){
                                 var message = rows.length > 1
                                 ? ('Are you sure you want to delete ' + rows.length +' employees?')

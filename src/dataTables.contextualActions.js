@@ -42,10 +42,10 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
         },
         buttonList: {
             enabled: true,
+            groupClass: 'btn-group',
             iconOnly: false,
             disabledOpacity: 0.5,
             dividerSpacing: 10,
-            buttonsAreOutline: false,
         },
         classes: [],
         iconPrefix: '',
@@ -230,12 +230,13 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                     icon = '<i style="margin-right:15px;" class="' + iconPrefix + ' ' + item.iconClass + '"></i>';
                 }
 
-                var bootstrapClass = (item.bootstrapClass === undefined || item.bootstrapClass.trim === '') ? '' : 'text-' + item.bootstrapClass;
 
+
+                var contextMenuClasses = item.contextMenuClasses !== undefined ? item.contextMenuClasses.join(' ') : '';
                 var extraClasses = item.classes !== undefined ? item.classes.join(' ') : '';
 
                 var title = item.title;
-                var itemElement = $.parseHTML('<a class="dropdown-item ' + extraClasses + ' ' + bootstrapClass + '" style="cursor: pointer;">' + icon + title + '</a>');
+                var itemElement = $.parseHTML('<a class="dropdown-item ' + extraClasses + ' ' + contextMenuClasses + '" style="cursor: pointer;">' + icon + title + '</a>');
 
                 if (typeof item.isDisabled === "function" && item.isDisabled(row)) $(itemElement).addClass('disabled').css('opacity', '0.5');
 
@@ -287,7 +288,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 
     // How exactly to create the buttons to render
     function createButtonGroup(options, classes, items, iconPrefix, rows) {
-        var buttonGroupTemplate = '<div class="btn-group"></div>';
+        var buttonGroupTemplate = '<div class="'+options.groupClass+'"></div>';
 
         var groups = [];
         var currentGroup = null;
@@ -320,17 +321,9 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                     icon = '<i style="' + marginRight + '" class="' + iconPrefix + ' ' + item.iconClass + '"></i>';
                 }
 
-                var buttonClasses = '';
-
-                // Get classes from its default or specified class
-                var outlinePrefix = options.buttonsAreOutline ? 'outline-' : '';
-                var bootstrapClass = (item.bootstrapClass === undefined || item.bootstrapClass.trim === '') ? '' : 'btn-' + outlinePrefix + item.bootstrapClass;
-                if (bootstrapClass === '') bootstrapClass = options.defaultButtonClass;
-                buttonClasses += ' ' + bootstrapClass;
-
-                // Get generic classes from the item
+                // Get button classes
+                var buttonClasses = item.buttonClasses !== undefined ? item.buttonClasses.join(' ') : '';
                 var extraClasses = item.classes !== undefined ? item.classes.join(' ') : '';
-                buttonClasses += ' ' + extraClasses;
 
                 // Build what the user will see in the button
                 var buttonContents = '';
@@ -353,7 +346,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                     title = '';
                 }
 
-                var itemElement = $.parseHTML('<button class="btn ' + buttonClasses + '" data-original-title="' + title + '" >' + buttonContents + '</button>');
+                var itemElement = $.parseHTML('<button class="' + buttonClasses + ' ' + extraClasses + '" data-original-title="' + title + '" >' + buttonContents + '</button>');
 
                 if (item.id !== undefined) {
                     $(itemElement).attr('id', item.id);

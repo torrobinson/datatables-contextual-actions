@@ -57,13 +57,14 @@
     white-space: nowrap;
 }
 
-.btn-group{
+.dropdown-menu .btn-group{
     position: relative;
     display: -ms-inline-flexbox;
     display: inline-flex;
     vertical-align: middle;
 }
-.btn{
+
+.dropdown-menu .btn{
     display: inline-block;
     font-weight: 400;
     color: #212529;
@@ -80,7 +81,7 @@
         border-right-color: transparent;
         border-bottom-color: transparent;
         border-left-color: transparent;
-    border-color: black;
+
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
     line-height: 1.5;

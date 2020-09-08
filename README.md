@@ -34,9 +34,8 @@ This will alter your table in the following ways:
 |                | **containerSelector** | string | The CSS selector of the container element that the buttons will be rendered into.<br><br>For example, `'#my-button-bar'` | required  |
 |                | **iconOnly** | bool | Whether or not to only display icons in the buttons.<br><br>If `true`, buttons will only contain icons, and the option titles are turned into tooltips. | `true`    |
 |                | **disabledOpacity**   | decimal  | The opacity of a disabled button or context menu icon | `0.5` |
-|                | **defaultButtonClass** | string  | The class to apply to all buttons by default.<br>Overridden by each `item`'s `bootstrapClass`<br> For example: `'btn-outline-secondary'` to default all unspecified buttons to be grey outlined buttons | `''` |
 |                | **dividerSpacing** | int| The number of pixels between divided groups of buttons  | `10` |
-|                | **buttonsAreOutline** | bool | Whether or not all buttons should be Bootstrap's `outline` style instead. When `true` and combined with an `item`'s `bootstrapClass` like `'primary'` it will yield a `'btn-outline-primary'` button rather than `'btn-primary'`  | `false` |
+|                | **groupClass** | string| The class to give to the groups of buttons in the button list. Groups are the groupings of buttons separated with `divider` typed items. For example, with bootstrap, use `btn-group`  | `` |
 | **items**||item[]| An array of `item` objects that represent the options that will be both rendered as buttons, and as options in a context menu. | required  |
 |             | **type** | string | <br>Items can be of the following types:<br><br><ul><br><li>`option` is the standard type. It means the option is row-scoped and relies on row data to determine its `action`.</li><br><br><li>`static` means its action will not receive any data, and it mimics a DataTables button in that it is always visible and is table-scoped, not row-scoped.</li><br><br><li>`divider` acts simply as a divider item that splits up the above types when being rendered.</li><br></ul> | required  |
 |             | **multi**  | bool | Whether or not to enable this button when more than 1 rows are selected | required  |
@@ -44,12 +43,14 @@ This will alter your table in the following ways:
 |             | **multiTitle**  | string | The `title` (above) to render when more than 1 rows are selected  | See above |
 |             | **iconClass** | string | The class of the `<i></i>` styled icon to render.<br>For example, if `iconPrefix` is `'fa fa-fw'` and `iconClass` is `'fa-eye'`, then `<i class="fa fa-fw fa-eye"></i>` is rendered.<br><br>Leave blank to render no icon. | `''` |
 |             | **classes** | string[]| An array of CSS classes to add onto the rendered item (either the button or the<br>dropdown option) | `[]` |
+|             | **contextMenuClasses** | string[]| An array of CSS classes to add onto the rendered item (ONLY the<br>dropdown version) | `[]` |
+|             | **buttonClasses** | string[]| An array of CSS classes to add onto the rendered item (ONLY the button version) | `[]` |
 |             | **id**  | string | Optionally you may assign an id to the item's rendered element if you wish to target it with any custom code | `''`|
-|             | **bootstrapClass**  | string   | The Bootstrap color class to assign to both buttons or context menu options.<br><br>These include:<br><br><ul><br><li>primary</li><br><li>secondary</li><br><li>success</li><br><li>danger</li><br><li>warning</li><br><li>info</li><br></ul><br>...etc   | `''`|
 |             | **confirmation**| object<br>or<br>function(rows) | The [Bootbox.js](http://bootboxjs.com/) confirmation configuration object.<br><br><br>**Exclude** the `callback` option, as this plugin hijacks this callback.<br><br>This can either be a static configuration, or a function of the `rows` the action<br>this confirmation is confirming.<br><br>Example:<br><br>`{`<br>`    title: 'Delete Item(s)',`<br>`    message: 'Do you want to delete the item(s)?',`<br>`    buttons: {`<br>`        cancel: {`<br>`            className: 'btn-link',`<br>`            label: 'Cancel'`<br>`        },`<br>`        confirm: {`<br>`            className: 'btn-danger',`<br>`            label: 'Delete'`<br>`   }`<br>`}` | `{}` |
 |             | **action** | function(rows)| The action to execute against the 1 or more `rows` selected when the action was executed  | required  |
 |             | **isDisabled** | bool<br>or<br>function(row)    | Whether or not to totally disable the option.<br><br>If a function of `row` is provided, this becomes a test to run against every selected row.<br>If ANY of the rows pass this test, the option will be disabled<br><br>For example, to disable the button for "John" rows:<br>`(row) => row.FirstName === 'John'` | `{}` |
 |             | **isHidden** | bool<br>or<br>function(row) | Similar to the above `isDisabled` but renders an option hidden/invisible instead of just being disabled (greyed out)  | `{}` |
+Please see the example page refered to above for a demo of how to use all these options together.
 
 
 # Initialization:
