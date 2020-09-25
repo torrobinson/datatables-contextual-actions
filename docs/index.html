@@ -678,6 +678,53 @@
 
                         {
                             type: 'option',
+                            title: 'Unassign Employee [Strict Mode]',
+                            multi: true,
+                            multiTitle: 'Unassign Employees',
+                            iconClass: 'fa-user-alt-slash',
+                            buttonClasses: ['btn','btn-outline-danger'],
+                            contextMenuClasses: ['text-danger'],
+
+                            isDisabled: (row) => {
+                                return row.role === ''
+                            },
+
+                            isDisabledStrictMode: true,
+
+                            confirmation: function(rows){
+                                var message = rows.length > 1
+                                ? ('Are you sure you want to unassign ' + rows.length +' roles?')
+                                : 'Are you sure you want to unassign ' + rows[0].fullName + '\'s role?';
+                                return {
+                                    title: rows.length > 1 ? 'Unassign Employees' : 'Unassign Employee',
+                                    message: message,
+                                    buttons: {
+                                        cancel: {
+                                            className: 'btn-link',
+                                            label: 'Cancel'
+                                        },
+                                        confirm: {
+                                            className: 'btn-danger',
+                                            label: '<i class="fa fa-user-slash"></i> Unassign'
+                                        }
+                                    }
+                                };
+                            },
+                            action: function(rows){
+                                // Change source data and redraw
+                                window.sampleData.filter(data => rows.map(row => row.fullName).includes(data.fullName)).forEach(data => {
+                                    data.role = '';
+                                    data.location = '';
+                                    data.extension = '';
+                                    data.startDate = '';
+                                    data.salary = '';
+                                });
+                                myTable.clear().rows.add(window.sampleData).draw();
+                            }
+                        },
+
+                        {
+                            type: 'option',
                             title: 'Delete Employee',
                             multi: true,
                             multiTitle: 'Delete Employees',

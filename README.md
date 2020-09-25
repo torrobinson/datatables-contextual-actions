@@ -1,4 +1,5 @@
 
+
 # datatables-contextual-actions
 ## [View Example](https://torrobinson.github.io/datatables-contextual-actions/docs/)
 
@@ -49,6 +50,7 @@ This will alter your table in the following ways:
 |             | **confirmation**| object<br>or<br>function(rows) | The [Bootbox.js](http://bootboxjs.com/) confirmation configuration object.<br><br><br>**Exclude** the `callback` option, as this plugin hijacks this callback.<br><br>This can either be a static configuration, or a function of the `rows` the action<br>this confirmation is confirming.<br><br>Example:<br><br>`{`<br>`    title: 'Delete Item(s)',`<br>`    message: 'Do you want to delete the item(s)?',`<br>`    buttons: {`<br>`        cancel: {`<br>`            className: 'btn-link',`<br>`            label: 'Cancel'`<br>`        },`<br>`        confirm: {`<br>`            className: 'btn-danger',`<br>`            label: 'Delete'`<br>`   }`<br>`}` | `{}` |
 |             | **action** | function(rows)| The action to execute against the 1 or more `rows` selected when the action was executed  | required  |
 |             | **isDisabled** | bool<br>or<br>function(row)    | Whether or not to totally disable the option.<br><br>If a function of `row` is provided, this becomes a test to run against every selected row.<br>If ANY of the rows pass this test, the option will be disabled<br><br>For example, to disable the button for "John" rows:<br>`(row) => row.FirstName === 'John'` | `{}` |
+|             | **isDisabledStrictMode** | bool  | Modifies the behaviour of `isDisabled` (see above). If specified and is `true`, then rather than allowing a `multi`-enabled button to be clicked when ANY selected row is enabled/applicable, ONLY enable the option if ALL selected rows are enabled/applicable. <br><br> `isDisabledStrictMode` ensures that ALL selected rows fail the `isDisabled` check (in other words, are ALL enabled) before allowing an action to be confirmed or executed  | `false` |
 |             | **isHidden** | bool<br>or<br>function(row) | Similar to the above `isDisabled` but renders an option hidden/invisible instead of just being disabled (greyed out)  | `{}` |
 Please see the example page refered to above for a demo of how to use all these options together.
 

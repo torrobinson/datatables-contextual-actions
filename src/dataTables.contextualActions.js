@@ -238,7 +238,10 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                 var title = item.title;
                 var itemElement = $.parseHTML('<a class="dropdown-item ' + extraClasses + ' ' + contextMenuClasses + '" style="cursor: pointer;">' + icon + title + '</a>');
 
-                if (typeof item.isDisabled === "function" && item.isDisabled(row)) $(itemElement).addClass('disabled').css('opacity', '0.5');
+                // If the item has logic for being disabled
+                if (typeof item.isDisabled === 'function' && item.isDisabled(row)){
+                    $(itemElement).addClass('disabled').css('opacity', '0.5');
+                }
 
                 // On click, perform the action
                 if (item.confirmation !== undefined) {
@@ -332,13 +335,16 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                 else buttonContents = icon;
 
                 var title = item.multiTitle === undefined ? item.title : (rows.length > 1 ? item.multiTitle : item.title);
+
+                var affectedItemCount = typeof item.isDisabled === 'function' ? rows.filter(row => !item.isDisabled(row)).length : rows.length;
+
                 if (options.iconOnly) {
                     // Of it's just an icon, it needs a tooltip title
                     title = title;
 
                     if (item.type !== 'static' && rows.length > 1) {
                         // Append the count if there's multiple rows selected and we're not a static button
-                        title += ' (' + rows.length + ')';
+                        title += ' (' +affectedItemCount + ')';
                     }
                 }
                 else {
@@ -358,10 +364,29 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                     ||
                     ((item.multi !== undefined && item.multi === false) && rows.length > 1) // If the item isn't a multi-action and yet there's more than 1 row selected,
                     ||
-                    (typeof item.isDisabled === "function" && rows.some(row => item.isDisabled(row))) // Or the item should be disabled,
+                    // Or the item should be disabled via user loguc,
+                    (
+                        // Because there's an isDisabled function provided
+                        typeof item.isDisabled === "function"
+                        && (
+                            // And either we're not strict mode
+                            (
+                                (typeof item.isDisabledStrictMode === 'undefined' || (typeof item.isDisabledStrictMode === 'boolean' && item.isDisabledStrictMode === false))
+                                // And NO rows are enabled
+                                && rows.filter(row => !item.isDisabled(row)).length === 0
+                            )
+                            ||
+                            // Or we ARE explicity in strict mode
+                            (
+                                (typeof item.isDisabledStrictMode === 'boolean' && item.isDisabledStrictMode === true)
+                                // And even one of the rows are disabled
+                                && rows.some(row => item.isDisabled(row)
+                            )
+                        )
+                    )
                     ||
                     (item.type === 'static' && typeof item.isDisabled === "function" && item.isDisabled())
-                    ;
+                );
 
                 if (
                     isDisabled
@@ -375,7 +400,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                 }
                 else if (!options.iconOnly && item.type !== 'static' && rows.length > 1) {
                     // Add the count of selected rows to the title, if the user doesn't want to just see the icon
-                    $(itemElement).append(' (' + rows.length + ')');
+                    $(itemElement).append(' (' + affectedItemCount + ')');
                 }
 
                 // If we're icon- only force immediate and obvious tooltips
@@ -395,7 +420,8 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                     else {
                         $(itemElement).click(function () {
                             _ca.dt.rows().deselect();
-                            item.action(rows, $(itemElement));
+                            var rowsToActionUpon = rows.filter(row => item.isDisabled === undefined || !item.isDisabled(row));
+                            item.action(rowsToActionUpon, $(itemElement));
                         });
                     }
                 }
@@ -421,11 +447,12 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 
     // Execute a confirmation action
     function onClickWithConfirmation(item, rows, btn) {
-        var confirmation = item.confirmation(rows);
+        var rowsToActionUpon = rows.filter(row => item.isDisabled === undefined || !item.isDisabled(row));
+        var confirmation = item.confirmation(rowsToActionUpon);
         confirmation.callback = function (confirmed) {
             if (confirmed) {
                 _ca.dt.rows().deselect();
-                item.action(rows, btn);
+                item.action(rowsToActionUpon, btn);
             }
         };
         options.showConfirmationMethod(confirmation);
