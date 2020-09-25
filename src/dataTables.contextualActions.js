@@ -27,10 +27,6 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
     // Set incoming table that _ca will init() with
     var table = this.table();
 
-
-
-
-
     // Default incoming options
     if (options === undefined || options === null) options = {};
     var defaultOptions = {
@@ -84,7 +80,9 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
             this.contextMenuId = (this.table instanceof jQuery ? this.table.attr('id') : this.table.id) + '-context-menu';
             this.rightClickedRowData = null;
 
+            // Reference _ca
             var me = this;
+
             // Handle row right-clicks
             $(this.table).on('contextmenu', 'tr', function (e) {
                 var node = this;
@@ -100,8 +98,6 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 
                 // Set the current row's data for access elsewhere
                 me.rightClickedRowData = data;
-
-
 
                 // Select the row
                 me.dt.row(node).select();
@@ -134,8 +130,6 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 
             // Immediately try render button list
             refreshButtonsOnSelectionChanged(this.dt, options, []);
-
-
         },
         update: function () {
             // Force-rerender the buttons
@@ -146,9 +140,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
     // Immediately initialize
     _ca.init(options);
 
-
-
-
+    // Internal functions below
 
     // Hides an open context menu
     function hideContextMenu() {
@@ -200,8 +192,8 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 
     // Helper to create a context menu
     function createContextMenu(id, classes, iconPrefix, destroy, items, row) {
+        // Create the actual menu element
         var menu = $('<div id="' + id + '" class="dropdown-menu shadow' + classes.join(' ') + '">');
-
         menu.css({
             display: 'block',
             visibility: 'hidden',
@@ -229,8 +221,6 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                 if (item.iconClass !== undefined && item.icon !== '') {
                     icon = '<i style="margin-right:15px;" class="' + iconPrefix + ' ' + item.iconClass + '"></i>';
                 }
-
-
 
                 var contextMenuClasses = item.contextMenuClasses !== undefined ? item.contextMenuClasses.join(' ') : '';
                 var extraClasses = item.classes !== undefined ? item.classes.join(' ') : '';
@@ -272,7 +262,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
         $('#' + id + '.dropdown-menu').remove();
     }
 
-    // Helper to update the button list
+    // Helper to update the button list with the intended option items
     function updateButtons(options, classes, items, iconPrefix, rows) {
         destroyButtonGroup(options.containerSelector, classes);
         createButtonGroup(options, classes, items, iconPrefix, rows);
@@ -285,7 +275,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
             $(options.containerSelector).removeClass(cssClass);
         });
 
-        // Annd empty it again
+        // And empty it again
         $(container).empty();
     }
 
@@ -391,7 +381,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                 if (
                     isDisabled
                 ) {
-                    // Then disable it
+                    // Then disable it with the following attributes
                     $(itemElement).addClass('disabled');
                     $(itemElement).attr('disabled', 'disabled');
                     $(itemElement).css('cursor', 'not-allowed');
@@ -447,7 +437,10 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 
     // Execute a confirmation action
     function onClickWithConfirmation(item, rows, btn) {
+        // Get rows that aren't disabled, if there are any
         var rowsToActionUpon = rows.filter(row => item.isDisabled === undefined || !item.isDisabled(row));
+
+        // Set up the confirmation
         var confirmation = item.confirmation(rowsToActionUpon);
         confirmation.callback = function (confirmed) {
             if (confirmed) {
@@ -455,6 +448,8 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                 item.action(rowsToActionUpon, btn);
             }
         };
+
+        // Execute it
         options.showConfirmationMethod(confirmation);
     }
 
@@ -466,7 +461,6 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
     function mergeDeep(target, ...sources) {
         if (!sources.length) return target;
         const source = sources.shift();
-
         if (isObject(target) && isObject(source)) {
             for (const key in source) {
                 if (isObject(source[key])) {
@@ -477,10 +471,8 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                 }
             }
         }
-
         return mergeDeep(target, ...sources);
     }
-
 
     return _ca;
 });
