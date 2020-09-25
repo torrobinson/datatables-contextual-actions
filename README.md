@@ -52,6 +52,8 @@ This will alter your table in the following ways:
 |             | **isDisabled** | bool<br>or<br>function(row)    | Whether or not to totally disable the option.<br><br>If a function of `row` is provided, this becomes a test to run against every selected row.<br>If ANY of the rows pass this test, the option will be disabled<br><br>For example, to disable the button for "John" rows:<br>`(row) => row.FirstName === 'John'` | `{}` |
 |             | **isDisabledStrictMode** | bool  | Modifies the behaviour of `isDisabled` (see above). If specified and is `true`, then rather than allowing a `multi`-enabled button to be clicked when ANY selected row is enabled/applicable, ONLY enable the option if ALL selected rows are enabled/applicable. <br><br> `isDisabledStrictMode` ensures that ALL selected rows fail the `isDisabled` check (in other words, are ALL enabled) before allowing an action to be confirmed or executed  | `false` |
 |             | **isHidden** | bool<br>or<br>function(row) | Similar to the above `isDisabled` but renders an option hidden/invisible instead of just being disabled (greyed out)  | `{}` |
+
+
 Please see the example page refered to above for a demo of how to use all these options together.
 
 
