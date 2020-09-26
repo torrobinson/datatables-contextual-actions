@@ -225,7 +225,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                 var contextMenuClasses = item.contextMenuClasses !== undefined ? item.contextMenuClasses.join(' ') : '';
                 var extraClasses = item.classes !== undefined ? item.classes.join(' ') : '';
 
-                var title = item.title;
+                var title = item.title || '';
                 var itemElement = $.parseHTML('<a class="dropdown-item ' + extraClasses + ' ' + contextMenuClasses + '" style="cursor: pointer;">' + icon + title + '</a>');
 
                 // If the item has logic for being disabled
@@ -321,10 +321,10 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                 // Build what the user will see in the button
                 var buttonContents = '';
 
-                if (!options.iconOnly) buttonContents = icon + item.title;
-                else buttonContents = icon;
+                var title = item.multiTitle === undefined ? item.title || '' : (rows.length > 1 ? item.multiTitle || '' : item.title || '');
 
-                var title = item.multiTitle === undefined ? item.title : (rows.length > 1 ? item.multiTitle : item.title);
+                if (!options.iconOnly) buttonContents = icon + title;
+                else buttonContents = icon;
 
                 var affectedItemCount = typeof item.isDisabled === 'function' ? rows.filter(row => !item.isDisabled(row)).length : rows.length;
 
