@@ -212,7 +212,14 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 
             // Handle dividers
             if (item.type === 'divider') {
-                menu.append('<div class="dropdown-divider"></div>');
+                // Only render dividers if they aren't first, last, or beside a previous divider
+                if(
+                    i > 0                               // first
+                    && i !== items.length-1             // last
+                    && items[i-1].type !== 'divider'    // previous wasn't also a divider
+                ){
+                    menu.append('<div class="dropdown-divider"></div>');
+                }
             }
 
             // Handle options
@@ -250,6 +257,16 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                 }
 
                 menu.append(itemElement);
+            }
+        });
+
+        // Finally, since a non-last divider can have a "hidden" item after it that might make it still render last, remove any first/last dividers
+        menu.children(':last-child.dropdown-divider').remove();
+
+        // And since a hidden item sandwiched between two dividers can render as 2 dividers back to back, remove duplicate elements
+        menu.children().each(function(){
+            if($(this).hasClass('dropdown-divider') && $(this).prev().hasClass('dropdown-divider')){
+                $(this).remove();
             }
         });
 
@@ -292,6 +309,18 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
                 // First iteration. New group.
                 currentGroup = $(buttonGroupTemplate);
             }
+            else if (i === 0 && item.type === 'divider'){
+                // If the first item is a divider, do nothing
+                return;
+            }
+            else if(i > 0 && item.type === 'divider' && items[i-1].type === 'divier'){
+                // If I'm a divider and the last item was a divier too, then don't do anything (no empty groups)
+                return;
+            }
+            else if (i === items.length-1 && item.type === 'divider'){
+                // If the last item is a divider, do nothing
+                return;
+            }
             else if (i > 0 && item.type === 'divider') {
                 // If the last item was a divider, then we need to package up the last group
                 groups.push(currentGroup);
@@ -304,7 +333,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 
 
             // If this item shouldnt even be rendered, skip it
-            if (typeof item.isHidden === "function" && rows.some(row => item.isHidden(row))) return;
+            if (typeof item.isHidden === "function" && (rows.length === 0 || rows.some(row => item.isHidden(row)))) return;
 
             // Handle options
             else if (item.type === 'option' || item.type === 'static') {
@@ -334,7 +363,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 
                     if (item.type !== 'static' && rows.length > 1) {
                         // Append the count if there's multiple rows selected and we're not a static button
-                        title += ' (' +affectedItemCount + ')';
+                        title += ' (' + affectedItemCount + ')';
                     }
                 }
                 else {
@@ -421,7 +450,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
             }
         });
 
-        // Then push the btn-gorup to the master list
+        // Then push the btn-group to the master list
         groups.push(currentGroup);
 
         // Apply any extra parent classes
@@ -431,7 +460,9 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 
         // Now push all the btn-groups into the parent container and bob's your uncle
         $.each(groups, function (i, group) {
-            $(options.containerSelector).append(group);
+            // Only push if the group actually has children/something to show
+            if(group.children().length > 0)
+                $(options.containerSelector).append(group);
         });
     }
 

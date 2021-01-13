@@ -581,6 +581,12 @@
                     },
 
                     items: [
+
+                        // Empty starter seperator to demonstrate that it won't render
+                        {
+                            type: 'divider'
+                        },
+
                         {
                             type: 'static',
                             title: 'Static Button',
@@ -591,6 +597,14 @@
                             }
                         },
 
+                        // Demonstrate not rendering 3 back to back dividers, only 1
+                        {
+                            type: 'divider'
+                        },
+                        
+                        {
+                            type: 'divider'
+                        },
 
                         {
                             type: 'divider'
@@ -755,6 +769,33 @@
                                 window.sampleData = window.sampleData.filter(data => !rows.map(row => row.fullName).includes(data.fullName));
                                 myTable.clear().rows.add(window.sampleData).draw();
                             }
+                        },
+
+                        {
+                            type: 'divider'
+                        },
+                        
+                        // A normally hidden option that only appears for even rows. Do not render as a button/menu option unless the selected items adhere
+                        {
+                            type: 'option',
+                            multi: false,
+                            title: 'Only Visible for Accountants',
+                            iconClass: 'fa-edit',
+                            buttonClasses: ['btn','btn-outline-secondary'],
+                            contextMenuClasses: ['text-secondary'],
+                            action: function(row){
+                                bootbox.alert('I only appear for even Accountants!');
+                            },
+
+                            isHidden: function(row){
+                              return row.role != 'Accountant';
+                            }
+                        },
+
+
+                        // Empty ending seperator to demonstrate that it won't render
+                        {
+                            type: 'divider'
                         },
                     ]
                 };
