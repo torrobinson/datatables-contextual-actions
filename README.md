@@ -35,14 +35,14 @@ This will alter your table in the following ways:
 
 ## options.contextMenu
 
-| Property           | Type                          | Description                                                                                                                                                                              | Default   |
-| ------------------ | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| **enabled**        | bool                          | Whether or not to display a context menu when the user right-clicks a row                                                                                                                | `true`    |
-| **isMulti**        | bool                          | If true, multiple rows can be selected and then acted upon by right-clicking. If false, right-clicking will de-select all other rows before showing the context menu (default behaviour) | `false`   |
-| **xoffset**        | int                           | The horizontal distance away, in pixels, to render the drop-down context menu from the mouse                                                                                             | `-10`     |
-| **yoffset**        | int                           | The vertical distance away, in pixels, to render the drop-down context menu from the mouse                                                                                               | `-10`     |
-| **showSpeed**      | string                        | A CSS duration describing how quickly the context menu should displayed                                                                                                                  | `'0.30s'` |
-| **headerRenderer** | string<br>or<br>function(row) | What to display as the context menu's header.<br><br>Can be a static string or a function of the <br>right-clicked row.                                                                  | `''`      |
+| Property           | Type                           | Description                                                                                                                                                                              | Default   |
+| ------------------ | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| **enabled**        | bool                           | Whether or not to display a context menu when the user right-clicks a row                                                                                                                | `true`    |
+| **isMulti**        | bool                           | If true, multiple rows can be selected and then acted upon by right-clicking. If false, right-clicking will de-select all other rows before showing the context menu (default behaviour) | `false`   |
+| **xoffset**        | int                            | The horizontal distance away, in pixels, to render the drop-down context menu from the mouse                                                                                             | `-10`     |
+| **yoffset**        | int                            | The vertical distance away, in pixels, to render the drop-down context menu from the mouse                                                                                               | `-10`     |
+| **showSpeed**      | string                         | A CSS duration describing how quickly the context menu should displayed                                                                                                                  | `'0.30s'` |
+| **headerRenderer** | string<br>or<br>function(rows) | What to display as the context menu's header.<br><br>Can be a static string or a function of the <br>rows selected.                                                                      | `''`      |
 
 ## options.buttonList
 
