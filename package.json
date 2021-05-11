@@ -1,0 +1,33 @@
+{
+  "name": "datatables-contextual-actions",
+  "version": "1.1.0",
+  "description": "A DataTables javascript plugin for adding contextual options (\"right-click\" menu, as well as a matching button-bar) to one or many selected rows.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "build": "node build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/torrobinson/datatables-contextual-actions.git"
+  },
+  "keywords": [
+    "datatables",
+    "datatablesjs",
+    "table",
+    "context",
+    "menu"
+  ],
+  "author": "Tor Robinson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/torrobinson/datatables-contextual-actions/issues"
+  },
+  "homepage": "https://github.com/torrobinson/datatables-contextual-actions#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "uglify-js": "^3.13.6"
+  }
+}
