@@ -7,8 +7,8 @@ var uglifycss = require('uglifycss');
 var scriptFileName = 'dataTables.contextualActions';
 var cssFileName = 'dataTables.contextualActions';
 var dir = __dirname;
-var sourceFolder = dir + '\\src\\';
-var distFolder = dir + '\\dist\\';
+var sourceFolder = dir + '/src/';
+var distFolder = dir + '/dist/';
 
 // Minification
 var code = fs.readFileSync(sourceFolder + scriptFileName + '.js', 'utf8');
