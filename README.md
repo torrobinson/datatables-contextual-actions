@@ -1,5 +1,5 @@
 # datatables-contextual-actions
-  
+
 ## 👉[View Example](https://torrobinson.github.io/datatables-contextual-actions/docs/)👈
 
 A DataTables JS extension for adding contextual options to one or many selected rows.
@@ -18,6 +18,37 @@ This will alter your table in the following ways:
 # Dependencies:
 
 -   [DataTables](https://github.com/DataTables/DataTables)
+
+# Getting Started:
+
+-   Use [DataTables](https://datatables.net/) in your project
+-   Include the javascript and css in your project:
+
+```html
+<!-- For example, use a CDN: -->
+<link rel="stylesheet" href="https://unpkg.com/datatables-contextual-actions@latest/dist/dataTables.contextualActions.min.css"/>
+<script src="https://unpkg.com/datatables-contextual-actions@latest/dist/dataTables.contextualActions.min.js"></script>
+```
+
+-    Initialize with a configuration (see the `Configuration` section below)
+
+```javascript
+$(document).ready(function () {
+	// Set up our table in standard DataTables fashion (with selection enabled)
+	var myTable = $('#dt').DataTable({
+		select: {
+			style: 'os',
+			selector: 'td:first-child',
+		},
+	});
+
+	// And initialize our plugin.
+	myTable.contextualActions({
+		// Configuration options as described above
+	});
+});
+```
+
 
 # Configuration:
 
@@ -76,29 +107,6 @@ This will alter your table in the following ways:
 
 Please see the example page referred to above for a demo of how to use all these options together.
 
-# Initialization:
-
-Initialize with the configuration object as described above.
-
-For example:
-
-```javascript
-$(document).ready(function () {
-	// Set up our table in standard DataTables fashion (with selection enabled)
-	var myTable = $('#dt').DataTable({
-		select: {
-			style: 'os',
-			selector: 'td:first-child',
-		},
-	});
-
-	// And initialize our plugin.
-	myTable.contextualActions({
-		// Configuration options as described above
-	});
-});
-```
-
 # Refreshing:
 
 If you change underlying data that some renderers rely on (`isDisabled` on a `static`-typed action, for example), and want to update the controls without having the user manually select/deselect rows, you can force-update contextualActions like so:
@@ -122,3 +130,14 @@ $(document).ready(function () {
 [contextmenu]: https://github.com/torrobinson/datatables-contextual-actions/blob/master/resources/context-menu.png 'Context Menu'
 [buttonlist]: https://github.com/torrobinson/datatables-contextual-actions/blob/master/resources/buttons.png 'Button List'
 [buttonlisticononly]: https://github.com/torrobinson/datatables-contextual-actions/blob/master/resources/buttonIconOnly.png 'Button List Icon Only'
+
+# Building:
+
+If you wish to examine the full source and/or make changes, clone the repo locally, make your changes, and run
+
+```node
+npm i
+npm run build
+```
+
+to build the minified `.js` and `.css` files.

@@ -1,8 +1,16 @@
-var scriptFile = 'src/dataTables.contextualActions';
-
+// Requires
 var fs = require('fs');
 var UglifyJS = require("uglify-js");
-var code = fs.readFileSync(scriptFile + '.js', 'utf8');
+var uglifycss = require('uglifycss');
+
+// Vars
+var scriptFileName = 'dataTables.contextualActions';
+var cssFileName = 'dataTables.contextualActions';
+var sourceFolder = '.\\src\\';
+var distFolder = '.\\dist\\';
+
+// Minification
+var code = fs.readFileSync(sourceFolder + scriptFileName + '.js', 'utf8');
 var uglifiedCode = UglifyJS.minify(
 		code, 
 		{
@@ -13,11 +21,30 @@ var uglifiedCode = UglifyJS.minify(
 		}
 	).code;
 
+var uglifiedCss = uglifycss.processFiles(
+    [ (sourceFolder + cssFileName+ '.css') ],
+    { maxLineLen: 500, expandVars: true }
+);
 
-fs.writeFile(scriptFile + '.min.js', uglifiedCode , function (err){
+// Create dist folder if not exists
+if (!fs.existsSync(distFolder)){
+    fs.mkdirSync(distFolder);
+}
+
+// Create the javascript
+fs.writeFile(distFolder + scriptFileName + '.min.js', uglifiedCode , function (err){
   if(err) {
     console.log(err);
   } else {
-    console.log('Minified file saved');
+    console.log('Minified javascript saved');
+  }      
+});
+
+// Create the CSS
+fs.writeFile(distFolder + cssFileName + '.min.css', uglifiedCss , function (err){
+  if(err) {
+    console.log(err);
+  } else {
+    console.log('Minified css saved');
   }      
 });
