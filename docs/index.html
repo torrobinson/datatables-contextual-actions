@@ -35,7 +35,9 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
 
 		<!-- The plugin itself -->
-		<script src="../dist/dataTables.contextualActions.min.js"></script>
+
+		<!-- Use for deployed env --> <script src="../dist/dataTables.contextualActions.min.js"></script>
+		<!-- Use for local dev --> <!-- <script src="../src/dataTables.contextualActions.js"></script> -->
 		<link
 			rel="stylesheet"
 			href="../dist/dataTables.contextualActions.min.css"
@@ -582,11 +584,12 @@
 								return rows.length + ' people selected';
 							} else {
 								let row = rows[0];
-								if (row.role !== '')
+								if (row?.role !== '')
 									return row.fullName + ' (' + row.role + ')';
 								else return row.fullName;
 							}
 						},
+						showStaticOptions: false
 					},
 					// Using bootbox? Customize how you confirm an action
 					showConfirmationMethod: bootbox.confirm,
@@ -610,6 +613,7 @@
 							title: 'Static Button',
 							iconClass: 'fa-lock',
 							buttonClasses: ['btn', 'btn-outline-primary'],
+							contextMenuClasses: ['text-primary'],
 							action: function () {
 								bootbox.alert(
 									"I am a static button that doesn't care about what row is selected. I'm always clickable!"
