@@ -327,7 +327,10 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 			}
 
 			// Handle options
-			else if (item.type === ITEMTYPE.OPTION) {
+			else if (
+					item.type === ITEMTYPE.OPTION
+					|| item.type === ITEMTYPE.STATIC
+				) {
 				var icon = '';
 				if (item.iconClass !== undefined && item.icon !== '') {
 					icon =
