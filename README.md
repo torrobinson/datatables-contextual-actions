@@ -2,7 +2,7 @@
 
 ## 👉[View Example](https://torrobinson.github.io/datatables-contextual-actions/docs/)👈
 
-A DataTables JS extension for adding contextual options to one or many selected rows.
+A DataTables JS extension for adding contextual options to one or many selected rows. Ideal if you want synchronized buttons and context-menu actions defined in a single place. 
 
 ![Context Menu][contextmenu]
 
@@ -10,14 +10,15 @@ A DataTables JS extension for adding contextual options to one or many selected 
 
 ![Button List Icon Only][buttonlisticononly]
 
-This will alter your table in the following ways:
-
+This will alter your DataTables table in the following ways:
+-	Your actions will be rendered as a row of buttons above your table
 -   Right-clicking a row will select it and present the user with a context menu of your actions
--   Selecting any number of rows will present the user with a single row of buttons with your actions
+
+Both can be individually enabled/disabled.
 
 # Dependencies:
 
--   [DataTables](https://github.com/DataTables/DataTables)
+-   [DataTables](https://github.com/DataTables/DataTables), the world's most comprehensive jQuery-based table component
 
 # Getting Started:
 
