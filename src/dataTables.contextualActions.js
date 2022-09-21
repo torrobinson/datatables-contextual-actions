@@ -77,6 +77,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 			headerRenderer: function () {
 				return '';
 			},
+			showStaticOptions: false
 		},
 		buttonList: {
 			enabled: true,
@@ -329,7 +330,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 			// Handle options
 			else if (
 					item.type === ITEMTYPE.OPTION
-					|| item.type === ITEMTYPE.STATIC
+					|| (options.contextMenu.showStaticOptions && item.type === ITEMTYPE.STATIC)
 				) {
 				var icon = '';
 				if (item.iconClass !== undefined && item.icon !== '') {

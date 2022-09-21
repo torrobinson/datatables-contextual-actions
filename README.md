@@ -74,6 +74,7 @@ $(document).ready(function () {
 | **yoffset**        | int                            | The vertical distance away, in pixels, to render the drop-down context menu from the mouse                                                                                               | `-10`     |
 | **showSpeed**      | string                         | A CSS duration describing how quickly the context menu should displayed                                                                                                                  | `'0.30s'` |
 | **headerRenderer** | string<br>or<br>function(rows) | What to display as the context menu's header.<br><br>Can be a static string or a function of the <br>rows selected.                                                                      | `''`      |
+| **showStaticOptions** | bool | Whether or not to display `static` items in the context menu                                                                      | `false`      |
 
 ## options.buttonList
 
