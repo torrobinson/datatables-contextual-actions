@@ -373,7 +373,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 				}
 
 				// Add on affected item counts if there's more than 1 row
-				if (rows.length > 1) {
+				if (rows.length > 1 && item.type !== ITEMTYPE.STATIC) {
 					var affectedItemCount =
 						typeof item.isDisabled === 'function'
 							? rows.filter((row) => !item.isDisabled(row)).length
