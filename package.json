@@ -1,6 +1,6 @@
 {
   "name": "datatables-contextual-actions",
-  "version": "1.1.1",
+  "version": "1.2",
   "description": "A DataTables javascript plugin for adding contextual options (\"right-click\" menu, as well as a matching button-bar) to one or many selected rows.",
   "main": "dist/dataTables.contextualActions.min.js",
   "directories": {
