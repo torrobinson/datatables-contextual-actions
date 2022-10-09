@@ -2,7 +2,7 @@
 
 ## 👉[View Example](https://torrobinson.github.io/datatables-contextual-actions/docs/)👈
 
-A DataTables JS extension for adding contextual options to one or many selected rows.
+A DataTables JS extension for adding contextual options to one or many selected rows. Ideal if you want synchronized buttons and context-menu actions defined in a single place. 
 
 ![Context Menu][contextmenu]
 
@@ -10,14 +10,15 @@ A DataTables JS extension for adding contextual options to one or many selected 
 
 ![Button List Icon Only][buttonlisticononly]
 
-This will alter your table in the following ways:
-
+This will alter your DataTables table in the following ways:
+-	Your actions will be rendered as a row of buttons above your table
 -   Right-clicking a row will select it and present the user with a context menu of your actions
--   Selecting any number of rows will present the user with a single row of buttons with your actions
+
+Both can be individually enabled/disabled.
 
 # Dependencies:
 
--   [DataTables](https://github.com/DataTables/DataTables)
+-   [DataTables](https://github.com/DataTables/DataTables), the world's most comprehensive jQuery-based table component
 
 # Getting Started:
 
@@ -74,6 +75,7 @@ $(document).ready(function () {
 | **yoffset**        | int                            | The vertical distance away, in pixels, to render the drop-down context menu from the mouse                                                                                               | `-10`     |
 | **showSpeed**      | string                         | A CSS duration describing how quickly the context menu should displayed                                                                                                                  | `'0.30s'` |
 | **headerRenderer** | string<br>or<br>function(rows) | What to display as the context menu's header.<br><br>Can be a static string or a function of the <br>rows selected.                                                                      | `''`      |
+| **showStaticOptions** | bool | Whether or not to display `static` items in the context menu                                                                      | `false`      |
 
 ## options.buttonList
 

@@ -77,6 +77,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 			headerRenderer: function () {
 				return '';
 			},
+			showStaticOptions: false
 		},
 		buttonList: {
 			enabled: true,
@@ -327,7 +328,10 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 			}
 
 			// Handle options
-			else if (item.type === ITEMTYPE.OPTION) {
+			else if (
+					item.type === ITEMTYPE.OPTION
+					|| (options.contextMenu.showStaticOptions && item.type === ITEMTYPE.STATIC)
+				) {
 				var icon = '';
 				if (item.iconClass !== undefined && item.icon !== '') {
 					icon =
@@ -369,7 +373,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 				}
 
 				// Add on affected item counts if there's more than 1 row
-				if (rows.length > 1) {
+				if (rows.length > 1 && item.type !== ITEMTYPE.STATIC) {
 					var affectedItemCount =
 						typeof item.isDisabled === 'function'
 							? rows.filter((row) => !item.isDisabled(row)).length
