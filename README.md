@@ -2,7 +2,7 @@
 
 ## 👉[View Example](https://torrobinson.github.io/datatables-contextual-actions/docs/)👈
 
-A DataTables JS extension for adding contextual options to one or many selected rows. Ideal if you want synchronized buttons and context-menu actions defined in a single place. 
+A DataTables JS extension for adding contextual options to one or many selected rows. Ideal if you want synchronized buttons and context-menu actions defined in a single place.
 
 ![Context Menu][contextmenu]
 
@@ -74,7 +74,9 @@ $(document).ready(function () {
 | **xoffset**        | int                            | The horizontal distance away, in pixels, to render the drop-down context menu from the mouse                                                                                             | `-10`     |
 | **yoffset**        | int                            | The vertical distance away, in pixels, to render the drop-down context menu from the mouse                                                                                               | `-10`     |
 | **showSpeed**      | string                         | A CSS duration describing how quickly the context menu should displayed                                                                                                                  | `'0.30s'` |
-| **headerRenderer** | string<br>or<br>function(rows) | What to display as the context menu's header.<br><br>Can be a static string or a function of the <br>rows selected.                                                                      | `''`      |
+| **headerRenderer** | string<br>*or*<br>function(rows)<br>*or*<br>false (bool) | What to display as the context menu's header.<br><br>Can be a static string or a function of the rows selected.<br><br>Set to `false` to skip rendering a header.                                                                      | `''`      |
+| **headerIsFollowedByDivider** | bool | Controls if a divider is automatically added next to the header. (Ignored, if header is set to `false`.)                                                                      | `false`     |
+
 | **showStaticOptions** | bool | Whether or not to display `static` items in the context menu                                                                      | `false`      |
 
 ## options.buttonList
