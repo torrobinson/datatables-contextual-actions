@@ -332,11 +332,23 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 
 			// Handle dividers
 			if (item.type === ITEMTYPE.DIVIDER) {
-				// Only render dividers if they aren't first, last, or beside a previous divider
+
+				// Ensure the divider is needed and actually divides items
+				// This is because dividers may be ideal within the button bar but not make sense in a context menu
 				if (
-					i > 0 && // first
-					i !== items.length - 1 && // last
-					items[i - 1].type !== ITEMTYPE.DIVIDER // previous wasn't also a divider
+					i > 0 && // the divider isn't first
+					i !== items.length - 1 && // the divider isn't last
+					items[i - 1].type !== ITEMTYPE.DIVIDER && // the previous item wasn't also a divider
+					// the previous item isn't a static item not shown in the context menu which is preceded itself by a divider
+					!(
+						// previous item is static and hidden in context menu
+						(items[i - 1].type === ITEMTYPE.STATIC && !options.contextMenu.showStaticOptions)
+						&&
+						// and the item before it was a divider
+						(
+							i >= 2 && items[i - 2].type === ITEMTYPE.DIVIDER
+						)
+					) // previous wasn't static but invisible and the one before that was a divider
 				) {
 					menu.append('<div class="dropdown-divider"></div>');
 				}
