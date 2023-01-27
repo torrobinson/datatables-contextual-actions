@@ -74,9 +74,8 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 			xoffset: -10,
 			yoffset: -10,
 			showSpeed: '0.30s',
-			headerRenderer: function () {
-				return '';
-			},
+			headerRenderer: '',
+			headerIsFollowedByDivider: false,
 			showStaticOptions: false
 		},
 		buttonList: {
@@ -254,9 +253,18 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 		});
 
 		// Generate the header for the menu
-		$('#' + _ca.contextMenuId)
-			.find('.dropdown-header')
-			.html(options.contextMenu.headerRenderer(_ca.rightClickedRowData));
+		if (options.contextMenu.headerRenderer !== false) {
+			var headerContent = '';
+			if (typeof options.contextMenu.headerRenderer === 'string') {
+				headerContent = options.contextMenu.headerRenderer
+			} else if (typeof options.contextMenu.headerRenderer === 'function') {
+				headerContent = options.contextMenu.headerRenderer(_ca.rightClickedRowData);
+			}
+
+			$('#' + _ca.contextMenuId)
+				.find('.dropdown-header')
+				.html(headerContent);
+		}
 
 		// Wait for next tick and then display
 		setTimeout(function () {
@@ -302,8 +310,15 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 			transition: '0.15s ease all',
 		});
 
-		// Add the header
-		menu.append('<h6 class="dropdown-header"></h6>');
+		// Add the header, if needed
+		if (options.contextMenu.headerRenderer !== false) {
+			menu.append('<h6 class="dropdown-header"></h6>');
+
+			// Optionally, add a divider as well
+			if (options.contextMenu.headerIsFollowedByDivider) {
+				menu.append('<div class="dropdown-divider"></div>');
+			}
+		}
 
 		// Add the items
 		$.each(items, function (i, item) {
