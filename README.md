@@ -134,13 +134,9 @@ $(document).ready(function () {
 [buttonlist]: https://github.com/torrobinson/datatables-contextual-actions/blob/master/resources/buttons.png 'Button List'
 [buttonlisticononly]: https://github.com/torrobinson/datatables-contextual-actions/blob/master/resources/buttonIconOnly.png 'Button List Icon Only'
 
-# Building:
-
-If you wish to examine the full source and/or make changes, clone the repo locally, make your changes, and run
-
-```node
-npm i
-npm run build
-```
-
-to build the minified `.js` and `.css` files.
+# Development & Building:
+- Launch the included VSCode workspace file (`datatables-contextual-actions.code-workspace`)
+- Run `npm i` to install any dependencies
+- Perform any development and test in the `~/index.html` file
+- When you're ready to build, execute the default build task (`Ctrl + Shift + B`)
+- Test the built changes in the `~/docs/index.html` documentation/demo file
