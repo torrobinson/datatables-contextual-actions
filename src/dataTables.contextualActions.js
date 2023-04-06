@@ -276,7 +276,6 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 
 		// Wait for next tick
 		setTimeout(function () {
-
 			// Get it into its original position
 			$('#' + _ca.contextMenuId).css({
 				display: 'block',
@@ -347,6 +346,8 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 		menu.css({
 			display: 'block',
 			visibility: 'hidden',
+			left:0,
+			top:0,
 			opacity: 0,
 		});
 
