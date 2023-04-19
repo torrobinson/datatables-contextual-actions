@@ -135,7 +135,6 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 
 			// Handle row right-clicks
 			$(this.table).on('contextmenu', 'tr', function (e) {
-				console.log(e);
 				var node = this;
 
 				// Deselect all rows if multi is not enabled for the contextmenu
