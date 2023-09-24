@@ -76,7 +76,8 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 			showSpeed: '0.30s',
 			headerRenderer: '',
 			headerIsFollowedByDivider: false,
-			showStaticOptions: false
+			showStaticOptions: false,
+			startsNewSelection: false
 		},
 		buttonList: {
 			enabled: true,
@@ -136,14 +137,32 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 			// Handle row right-clicks
 			$(this.table).on('contextmenu', 'tr', function (e) {
 				var node = this;
-
+				var deslectAllRowsFirst = () => _ca.table.DataTable().rows().deselect();
 				// Deselect all rows if multi is not enabled for the contextmenu
 				if (!options.contextMenu.isMulti) {
 					// Deselect rows
-					_ca.table.DataTable().rows().deselect();
+					deslectAllRowsFirst();
+				}
+				else{
+					// The context menu is multi-enabled
+					
+					// If the user has right-clicked on a non-selected row
+					var isRowSelected = me.dt.rows({selected: true})
+											.indexes()
+											.toArray()
+											.includes(
+												_ca.dt.row(this).index()
+											);
+					if(!isRowSelected){
+						// And if the user wants to start new selections on right clicking non-selected rows
+						if(options.contextMenu.startsNewSelection){
+							// Deselect rows
+							deslectAllRowsFirst();
+						}
+					}
 				}
 
-				// Select the row
+				// Always select the row the menu opened on
 				me.dt.row(node).select();
 				var selectedRowIndexes = me.table
 					.DataTable()
@@ -154,7 +173,6 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 					.rows(selectedRowIndexes)
 					.data()
 					.toArray();
-				//var data = me.dt.row(node).data();
 
 				if (!options.contextMenu.enabled) return;
 
