@@ -77,6 +77,7 @@ $(document).ready(function () {
 | **headerRenderer** | string<br>*or*<br>function(rows)<br>*or*<br>false (bool) | What to display as the context menu's header.<br><br>Can be a static string or a function of the rows selected.<br><br>Set to `false` to skip rendering a header.                                                                      | `''`      |
 | **headerIsFollowedByDivider** | bool | Controls if a divider is automatically added next to the header. (Ignored, if header is set to `false`.)                                                                      | `false`     |
 | **showStaticOptions** | bool | Whether or not to display `static` items in the context menu                                                                      | `false`      |
+| **startsNewSelection** | bool | Whether or not to start a new selection (deselect other rows) when `isMulti` is `true` and a non-selected row is right-clicked | `false`      |
 
 ## options.buttonList
 
