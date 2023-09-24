@@ -52,6 +52,7 @@ fs.writeFile(distFolder + cssFileName + '.min.css', uglifiedCss , function (err)
 });
 
 // Copy over the index.html documentation to /docs/ with the script path replaced to use /dist/
+fs.mkdir('./docs/', { recursive: true }, (err) => {if(err) throw err});
 fs.copyFile('index.html', 'docs/index.html', (err) => {
   	if (err) throw err;
   	
