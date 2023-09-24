@@ -236,6 +236,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 
 	// Shows a context menu at the given offset from current mouse position
 	function showContextMenuAt(x, y) {
+
 		// Create the context menu
 		createContextMenu(
 			_ca.contextMenuId,
@@ -246,19 +247,25 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 			_ca.rightClickedRowData
 		);
 
-		// Set its coordinates
-		$('#' + _ca.contextMenuId).css({
-			top: y + options.contextMenu.yoffset,
-			left: x + options.contextMenu.xoffset,
-		});
+		// Determine its coordinates
+		var contextMenuTopPosition = y + options.contextMenu.yoffset;
+		var contextMenuLeftPosition = x + options.contextMenu.xoffset;
 
+		
 		// Generate the header for the menu
 		if (options.contextMenu.headerRenderer !== false) {
 			var headerContent = '';
-			if (typeof options.contextMenu.headerRenderer === 'string') {
-				headerContent = options.contextMenu.headerRenderer
-			} else if (typeof options.contextMenu.headerRenderer === 'function') {
-				headerContent = options.contextMenu.headerRenderer(_ca.rightClickedRowData);
+
+			// Try determine the context menu's header content
+			try{
+				if (typeof options.contextMenu.headerRenderer === 'string') {
+					headerContent = options.contextMenu.headerRenderer
+				} else if (typeof options.contextMenu.headerRenderer === 'function') {
+					headerContent = options.contextMenu.headerRenderer(_ca.rightClickedRowData);
+				}
+			}
+			catch(ex){
+				headerContent = '';
 			}
 
 			$('#' + _ca.contextMenuId)
@@ -266,16 +273,49 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 				.html(headerContent);
 		}
 
-		// Wait for next tick and then display
+		// Wait for next tick
 		setTimeout(function () {
+			// Get it into its original position
 			$('#' + _ca.contextMenuId).css({
 				display: 'block',
 				visibility: 'visible',
-				opacity: 1,
-				transform: 'translateY(0px)',
-				transition: options.contextMenu.showSpeed + ' ease all',
+				opacity: 0,
+				top: contextMenuTopPosition,
+				left: contextMenuLeftPosition,
+				transition: '' + options.contextMenu.showSpeed + ' ease all, left 0s, top 0s',
 				'z-index': 99999,
 			});
+
+			
+			// After it's been fully rendered, check if it's going off screen
+			$('#' + _ca.contextMenuId).css({
+				opacity: 1,
+			});
+
+			const viewportPaddingInPixels = 20;
+
+			// Check if it's extending past the height of the viewport
+			var contextMenuBounding = $('#' + _ca.contextMenuId).get(0).getBoundingClientRect();
+			var viewportBottom = window.innerHeight;
+			var viewportRight =  document.body.clientWidth;
+
+			// Adjustments
+			var wasPositionAdjusted = false;
+			if(contextMenuBounding.bottom > viewportBottom){
+				contextMenuTopPosition -= (contextMenuBounding.bottom - viewportBottom);
+				wasPositionAdjusted = true;
+			}
+			if(contextMenuBounding.right > viewportRight){
+				contextMenuLeftPosition -= (contextMenuBounding.right - viewportRight);
+				wasPositionAdjusted = true;
+			}
+			if(wasPositionAdjusted){
+				$('#' + _ca.contextMenuId).css({
+					top: contextMenuTopPosition - viewportPaddingInPixels,
+					left: contextMenuLeftPosition - viewportPaddingInPixels,
+				});
+			}
+
 		}, 1);
 	}
 
@@ -305,9 +345,14 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 		menu.css({
 			display: 'block',
 			visibility: 'hidden',
+			left:0,
+			top:0,
 			opacity: 0,
-			transform: 'translateY(-30px)',
-			transition: '0.15s ease all',
+		});
+
+		menu.on("contextmenu", function(e) {
+			// Disable accidentally further right-clicking this context menu
+			return false;
 		});
 
 		// Add the header, if needed

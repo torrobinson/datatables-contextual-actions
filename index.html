@@ -35,13 +35,8 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
 
 		<!-- The plugin itself -->
-
-		<!-- Use for deployed env --> <script src="../dist/dataTables.contextualActions.min.js"></script>
-		<!-- Use for local dev --> <!-- <script src="../src/dataTables.contextualActions.js"></script> -->
-		<link
-			rel="stylesheet"
-			href="../dist/dataTables.contextualActions.min.css"
-		/>
+		<script src="./src/dataTables.contextualActions.js"></script>
+		<link rel="stylesheet" href="./src/dataTables.contextualActions.css"/>
 
 		<!-- Example styling -->
 		<style>
@@ -578,6 +573,7 @@
 						isMulti: true,
 						xoffset: -10,
 						yoffset: -10,
+						showSpeed: '0.50s',
 						headerRenderer: function (rows) {
 							if (rows.length > 1) {
 								// For when we have contextMenu.isMulti enabled and have more than 1 row selected

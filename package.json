@@ -26,8 +26,8 @@
     "url": "https://github.com/torrobinson/datatables-contextual-actions/issues"
   },
   "homepage": "https://github.com/torrobinson/datatables-contextual-actions#readme",
-  "dependencies": {},
   "devDependencies": {
+    "replace-in-file": "^6.3.5",
     "uglify-js": "^3.13.6",
     "uglifycss": "0.0.29"
   }
