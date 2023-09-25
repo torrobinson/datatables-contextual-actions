@@ -1,0 +1,924 @@
+<html>
+	<head>
+		<!-- Required Libraries -->
+		<!-- jQuery -->
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.js"></script>
+
+		<!-- DataTables -->
+		<link
+			rel="stylesheet"
+			href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css"
+		/>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/jquery.dataTables.min.js"></script>
+		<link
+			rel="stylesheet"
+			href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"
+		/>
+		<script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+
+		<!-- Optional libraries-->
+		<!-- Font Awesome -->
+		<script
+			src="https://kit.fontawesome.com/ce468453a1.js"
+			crossorigin="anonymous"
+		></script>
+
+		<!-- Boostrap -->
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.css"
+		/>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.js"></script>
+
+		<!-- Bootbox -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
+
+		<!-- The plugin itself -->
+		<script src="../dist/dataTables.contextualActions.min.js"></script>
+		<link rel="stylesheet" href="../dist/dataTables.contextualActions.min.css"/>
+
+		<!-- Example styling -->
+		<style>
+			/* Make the buttons stand out on a white background*/
+			#my-button-container {
+				padding: 20px;
+			}
+
+			body {
+				font-family: sans-serif !important;
+			}
+
+			.text-danger {
+				color: red;
+			}
+			.text-danger:hover {
+				background-color: red;
+				color: white;
+			}
+		</style>
+
+		<script type="text/javascript">
+			var sampleData = [
+				{
+					fullName: 'Tiger Nixon',
+					role: 'System Architect',
+					location: 'Edinburgh',
+					extension: '5421',
+					startDate: '2011/04/25',
+					salary: '$320,800',
+				},
+				{
+					fullName: 'Garrett Winters',
+					role: 'Accountant',
+					location: 'Tokyo',
+					extension: '8422',
+					startDate: '2011/07/25',
+					salary: '$170,750',
+				},
+				{
+					fullName: 'Ashton Cox',
+					role: 'Junior Technical Author',
+					location: 'San Francisco',
+					extension: '1562',
+					startDate: '2009/01/12',
+					salary: '$86,000',
+				},
+				{
+					fullName: 'Cedric Kelly',
+					role: 'Senior Javascript Developer',
+					location: 'Edinburgh',
+					extension: '6224',
+					startDate: '2012/03/29',
+					salary: '$433,060',
+				},
+				{
+					fullName: 'Airi Satou',
+					role: 'Accountant',
+					location: 'Tokyo',
+					extension: '5407',
+					startDate: '2008/11/28',
+					salary: '$162,700',
+				},
+				{
+					fullName: 'Brielle Williamson',
+					role: 'Integration Specialist',
+					location: 'New York',
+					extension: '4804',
+					startDate: '2012/12/02',
+					salary: '$372,000',
+				},
+				{
+					fullName: 'Herrod Chandler',
+					role: 'Sales Assistant',
+					location: 'San Francisco',
+					extension: '9608',
+					startDate: '2012/08/06',
+					salary: '$137,500',
+				},
+				{
+					fullName: 'Rhona Davidson',
+					role: 'Integration Specialist',
+					location: 'Tokyo',
+					extension: '6200',
+					startDate: '2010/10/14',
+					salary: '$327,900',
+				},
+				{
+					fullName: 'Colleen Hurst',
+					role: 'Javascript Developer',
+					location: 'San Francisco',
+					extension: '2360',
+					startDate: '2009/09/15',
+					salary: '$205,500',
+				},
+				{
+					fullName: 'Sonya Frost',
+					role: 'Software Engineer',
+					location: 'Edinburgh',
+					extension: '1667',
+					startDate: '2008/12/13',
+					salary: '$103,600',
+				},
+				{
+					fullName: 'Jena Gaines',
+					role: 'Office Manager',
+					location: 'London',
+					extension: '3814',
+					startDate: '2008/12/19',
+					salary: '$90,560',
+				},
+				{
+					fullName: 'Quinn Flynn',
+					role: 'Support Lead',
+					location: 'Edinburgh',
+					extension: '9497',
+					startDate: '2013/03/03',
+					salary: '$342,000',
+				},
+				{
+					fullName: 'Charde Marshall',
+					role: 'Regional Director',
+					location: 'San Francisco',
+					extension: '6741',
+					startDate: '2008/10/16',
+					salary: '$470,600',
+				},
+				{
+					fullName: 'Haley Kennedy',
+					role: 'Senior Marketing Designer',
+					location: 'London',
+					extension: '3597',
+					startDate: '2012/12/18',
+					salary: '$313,500',
+				},
+				{
+					fullName: 'Tatyana Fitzpatrick',
+					role: 'Regional Director',
+					location: 'London',
+					extension: '1965',
+					startDate: '2010/03/17',
+					salary: '$385,750',
+				},
+				{
+					fullName: 'Michael Silva',
+					role: 'Marketing Designer',
+					location: 'London',
+					extension: '1581',
+					startDate: '2012/11/27',
+					salary: '$198,500',
+				},
+				{
+					fullName: 'Paul Byrd',
+					role: 'Chief Financial Officer (CFO)',
+					location: 'New York',
+					extension: '3059',
+					startDate: '2010/06/09',
+					salary: '$725,000',
+				},
+				{
+					fullName: 'Gloria Little',
+					role: 'Systems Administrator',
+					location: 'New York',
+					extension: '1721',
+					startDate: '2009/04/10',
+					salary: '$237,500',
+				},
+				{
+					fullName: 'Bradley Greer',
+					role: 'Software Engineer',
+					location: 'London',
+					extension: '2558',
+					startDate: '2012/10/13',
+					salary: '$132,000',
+				},
+				{
+					fullName: 'Dai Rios',
+					role: 'Personnel Lead',
+					location: 'Edinburgh',
+					extension: '2290',
+					startDate: '2012/09/26',
+					salary: '$217,500',
+				},
+				{
+					fullName: 'Jenette Caldwell',
+					role: 'Development Lead',
+					location: 'New York',
+					extension: '1937',
+					startDate: '2011/09/03',
+					salary: '$345,000',
+				},
+				{
+					fullName: 'Yuri Berry',
+					role: 'Chief Marketing Officer (CMO)',
+					location: 'New York',
+					extension: '6154',
+					startDate: '2009/06/25',
+					salary: '$675,000',
+				},
+				{
+					fullName: 'Caesar Vance',
+					role: 'Pre-Sales Support',
+					location: 'New York',
+					extension: '8330',
+					startDate: '2011/12/12',
+					salary: '$106,450',
+				},
+				{
+					fullName: 'Doris Wilder',
+					role: 'Sales Assistant',
+					location: 'Sydney',
+					extension: '3023',
+					startDate: '2010/09/20',
+					salary: '$85,600',
+				},
+				{
+					fullName: 'Angelica Ramos',
+					role: 'Chief Executive Officer (CEO)',
+					location: 'London',
+					extension: '5797',
+					startDate: '2009/10/09',
+					salary: '$1,200,000',
+				},
+				{
+					fullName: 'Gavin Joyce',
+					role: 'Developer',
+					location: 'Edinburgh',
+					extension: '8822',
+					startDate: '2010/12/22',
+					salary: '$92,575',
+				},
+				{
+					fullName: 'Jennifer Chang',
+					role: 'Regional Director',
+					location: 'Singapore',
+					extension: '9239',
+					startDate: '2010/11/14',
+					salary: '$357,650',
+				},
+				{
+					fullName: 'Brenden Wagner',
+					role: 'Software Engineer',
+					location: 'San Francisco',
+					extension: '1314',
+					startDate: '2011/06/07',
+					salary: '$206,850',
+				},
+				{
+					fullName: 'Fiona Green',
+					role: 'Chief Operating Officer (COO)',
+					location: 'San Francisco',
+					extension: '2947',
+					startDate: '2010/03/11',
+					salary: '$850,000',
+				},
+				{
+					fullName: 'Shou Itou',
+					role: 'Regional Marketing',
+					location: 'Tokyo',
+					extension: '8899',
+					startDate: '2011/08/14',
+					salary: '$163,000',
+				},
+				{
+					fullName: 'Michelle House',
+					role: 'Integration Specialist',
+					location: 'Sydney',
+					extension: '2769',
+					startDate: '2011/06/02',
+					salary: '$95,400',
+				},
+				{
+					fullName: 'Suki Burks',
+					role: 'Developer',
+					location: 'London',
+					extension: '6832',
+					startDate: '2009/10/22',
+					salary: '$114,500',
+				},
+				{
+					fullName: 'Prescott Bartlett',
+					role: 'Technical Author',
+					location: 'London',
+					extension: '3606',
+					startDate: '2011/05/07',
+					salary: '$145,000',
+				},
+				{
+					fullName: 'Gavin Cortez',
+					role: 'Team Leader',
+					location: 'San Francisco',
+					extension: '2860',
+					startDate: '2008/10/26',
+					salary: '$235,500',
+				},
+				{
+					fullName: 'Martena Mccray',
+					role: 'Post-Sales support',
+					location: 'Edinburgh',
+					extension: '8240',
+					startDate: '2011/03/09',
+					salary: '$324,050',
+				},
+				{
+					fullName: 'Unity Butler',
+					role: 'Marketing Designer',
+					location: 'San Francisco',
+					extension: '5384',
+					startDate: '2009/12/09',
+					salary: '$85,675',
+				},
+				{
+					fullName: 'Howard Hatfield',
+					role: 'Office Manager',
+					location: 'San Francisco',
+					extension: '7031',
+					startDate: '2008/12/16',
+					salary: '$164,500',
+				},
+				{
+					fullName: 'Hope Fuentes',
+					role: 'Secretary',
+					location: 'San Francisco',
+					extension: '6318',
+					startDate: '2010/02/12',
+					salary: '$109,850',
+				},
+				{
+					fullName: 'Vivian Harrell',
+					role: 'Financial Controller',
+					location: 'San Francisco',
+					extension: '9422',
+					startDate: '2009/02/14',
+					salary: '$452,500',
+				},
+				{
+					fullName: 'Timothy Mooney',
+					role: 'Office Manager',
+					location: 'London',
+					extension: '7580',
+					startDate: '2008/12/11',
+					salary: '$136,200',
+				},
+				{
+					fullName: 'Jackson Bradshaw',
+					role: 'Director',
+					location: 'New York',
+					extension: '1042',
+					startDate: '2008/09/26',
+					salary: '$645,750',
+				},
+				{
+					fullName: 'Olivia Liang',
+					role: 'Support Engineer',
+					location: 'Singapore',
+					extension: '2120',
+					startDate: '2011/02/03',
+					salary: '$234,500',
+				},
+				{
+					fullName: 'Bruno Nash',
+					role: 'Software Engineer',
+					location: 'London',
+					extension: '6222',
+					startDate: '2011/05/03',
+					salary: '$163,500',
+				},
+				{
+					fullName: 'Sakura Yamamoto',
+					role: 'Support Engineer',
+					location: 'Tokyo',
+					extension: '9383',
+					startDate: '2009/08/19',
+					salary: '$139,575',
+				},
+				{
+					fullName: 'Thor Walton',
+					role: 'Developer',
+					location: 'New York',
+					extension: '8327',
+					startDate: '2013/08/11',
+					salary: '$98,540',
+				},
+				{
+					fullName: 'Finn Camacho',
+					role: 'Support Engineer',
+					location: 'San Francisco',
+					extension: '2927',
+					startDate: '2009/07/07',
+					salary: '$87,500',
+				},
+				{
+					fullName: 'Serge Baldwin',
+					role: 'Data Coordinator',
+					location: 'Singapore',
+					extension: '8352',
+					startDate: '2012/04/09',
+					salary: '$138,575',
+				},
+				{
+					fullName: 'Zenaida Frank',
+					role: 'Software Engineer',
+					location: 'New York',
+					extension: '7439',
+					startDate: '2010/01/04',
+					salary: '$125,250',
+				},
+				{
+					fullName: 'Zorita Serrano',
+					role: 'Software Engineer',
+					location: 'San Francisco',
+					extension: '4389',
+					startDate: '2012/06/01',
+					salary: '$115,000',
+				},
+				{
+					fullName: 'Jennifer Acosta',
+					role: 'Junior Javascript Developer',
+					location: 'Edinburgh',
+					extension: '3431',
+					startDate: '2013/02/01',
+					salary: '$75,650',
+				},
+				{
+					fullName: 'Cara Stevens',
+					role: 'Sales Assistant',
+					location: 'New York',
+					extension: '3990',
+					startDate: '2011/12/06',
+					salary: '$145,600',
+				},
+				{
+					fullName: 'Hermione Butler',
+					role: 'Regional Director',
+					location: 'London',
+					extension: '1016',
+					startDate: '2011/03/21',
+					salary: '$356,250',
+				},
+				{
+					fullName: 'Lael Greer',
+					role: 'Systems Administrator',
+					location: 'London',
+					extension: '6733',
+					startDate: '2009/02/27',
+					salary: '$103,500',
+				},
+				{
+					fullName: 'Jonas Alexander',
+					role: 'Developer',
+					location: 'San Francisco',
+					extension: '8196',
+					startDate: '2010/07/14',
+					salary: '$86,500',
+				},
+				{
+					fullName: 'Shad Decker',
+					role: 'Regional Director',
+					location: 'Edinburgh',
+					extension: '6373',
+					startDate: '2008/11/13',
+					salary: '$183,000',
+				},
+				{
+					fullName: 'Michael Bruce',
+					role: 'Javascript Developer',
+					location: 'Singapore',
+					extension: '5384',
+					startDate: '2011/06/27',
+					salary: '$183,000',
+				},
+				{
+					fullName: 'Donna Snider',
+					role: 'Customer Support',
+					location: 'New York',
+					extension: '4226',
+					startDate: '2011/01/25',
+					salary: '$112,000',
+				},
+			];
+
+			$(document).ready(function () {
+				// Initialize the table
+				var myTable = $('#dt').DataTable({
+					// Enable selection and make the first column the selection column
+					select: {
+						style: 'multi',
+						selector: 'td:first-child',
+					},
+					columns: [
+						{
+							render: function (data, type, row) {
+								return '';
+							},
+							orderable: false,
+							className: 'select-checkbox',
+						},
+						{
+							title: 'Full Name',
+							data: 'fullName',
+						},
+						{
+							title: 'Role',
+							data: 'role',
+						},
+						{
+							title: 'Location',
+							data: 'location',
+						},
+						{
+							title: 'Extension',
+							data: 'extension',
+						},
+						{
+							title: 'Start Date',
+							data: 'startDate',
+						},
+						{
+							title: 'Salary',
+							data: 'salary',
+						},
+					],
+				});
+
+				// Feed it some json data and redraw
+				myTable.rows.add(sampleData).draw();
+
+				// Then set up some action options
+				var actionOptions = {
+					iconPrefix: 'fad fa-fw',
+					classes: [],
+					contextMenu: {
+						enabled: true,
+						isMulti: true,
+						xoffset: -10,
+						yoffset: -10,
+						showSpeed: '0.50s',
+						headerRenderer: function (rows) {
+							if (rows.length > 1) {
+								// For when we have contextMenu.isMulti enabled and have more than 1 row selected
+								return rows.length + ' people selected';
+							} else {
+								let row = rows[0];
+								if (row?.role !== '')
+									return row.fullName + ' (' + row.role + ')';
+								else return row.fullName;
+							}
+						},
+						headerIsFollowedByDivider: true,
+						showStaticOptions: false,
+						startsNewSelection: false
+					},
+					// Using bootbox? Customize how you confirm an action
+					showConfirmationMethod: bootbox.confirm,
+					buttonList: {
+						enabled: true,
+						iconOnly: false,
+						containerSelector: '#my-button-container',
+						groupClass: 'btn-group',
+						disabledOpacity: 0.4,
+						dividerSpacing: 10,
+					},
+					deselectAfterAction: true,
+					items: [
+						// Empty starter seperator to demonstrate that it won't render
+						{
+							type: 'divider',
+						},
+
+						{
+							type: 'static',
+							title: 'Static Button',
+							iconClass: 'fa-lock',
+							buttonClasses: ['btn', 'btn-outline-primary'],
+							contextMenuClasses: ['text-primary'],
+							action: function () {
+								bootbox.alert(
+									"I am a static button that doesn't care about what row is selected. I'm always clickable!"
+								);
+							},
+						},
+
+						// Demonstrate not rendering 3 back to back dividers, only 1
+						{
+							type: 'divider',
+						},
+
+						{
+							type: 'divider',
+						},
+
+						{
+							type: 'divider',
+						},
+
+						{
+							type: 'option',
+							multi: false,
+							title: 'Edit',
+							iconClass: 'fa-edit',
+							buttonClasses: ['btn', 'btn-outline-secondary'],
+							contextMenuClasses: ['text-secondary'],
+							action: function (row) {
+								bootbox.alert(
+									'Edit here for ' + row[0].fullName
+								);
+							},
+							isDisabled: function (row) {
+								return row.fullName.charAt(0) === 'A'; // 'A' name's can't edit, for example
+							},
+						},
+
+						{
+							type: 'option',
+							title: 'Transfer',
+							multi: false,
+							iconClass: 'fa-exchange-alt',
+							buttonClasses: ['btn', 'btn-outline-secondary'],
+							contextMenuClasses: ['text-secondary'],
+							action: function (row) {
+								bootbox.alert(
+									'Transfer here for ' + row[0].fullName
+								);
+							},
+							isHidden: function (row) {
+								return false; // for example
+							},
+						},
+
+						{
+							type: 'divider',
+						},
+
+						{
+							type: 'option',
+							title: 'Unassign Employee',
+							multi: true,
+							multiTitle: 'Unassign Employees',
+							iconClass: 'fa-user-alt-slash',
+							buttonClasses: ['btn', 'btn-outline-danger'],
+							contextMenuClasses: ['text-danger'],
+
+							isDisabled: (row) => {
+								return row.role === '';
+							},
+
+							confirmation: function (rows) {
+								var message =
+									rows.length > 1
+										? 'Are you sure you want to unassign ' +
+										  rows.length +
+										  ' roles?'
+										: 'Are you sure you want to unassign ' +
+										  rows[0].fullName +
+										  "'s role?";
+								return {
+									title:
+										rows.length > 1
+											? 'Unassign Employees'
+											: 'Unassign Employee',
+									message: message,
+									buttons: {
+										cancel: {
+											className: 'btn-link',
+											label: 'Cancel',
+										},
+										confirm: {
+											className: 'btn-danger',
+											label: '<i class="fa fa-user-slash"></i> Unassign',
+										},
+									},
+								};
+							},
+							action: function (rows) {
+								// For sake of example, change the source data
+								window.sampleData
+									.filter((data) =>
+										rows
+											.map((row) => row.fullName)
+											.includes(data.fullName)
+									)
+									.forEach((data) => {
+										data.role = '';
+										data.location = '';
+										data.extension = '';
+										data.startDate = '';
+										data.salary = '';
+									});
+
+								// Then change the data inline without redrawing and losing state
+								myTable.rows(function (idx, data, node) {
+									if (
+										rows
+											.map((r) => r.fullName)
+											.includes(data.fullName)
+									) {
+										let rowData = myTable.row(idx).data();
+										rowData.role = '';
+										rowData.location = '';
+										rowData.extension = '';
+										rowData.startDate = '';
+										rowData.salary = '';
+										myTable
+											.row(idx)
+											.data(rowData)
+											.invalidate();
+									}
+									return false;
+								});
+							},
+						},
+
+						{
+							type: 'option',
+							title: 'Unassign Employee [Strict Mode]',
+							multi: true,
+							multiTitle: 'Unassign Employees [Strict Mode]',
+							iconClass: 'fa-user-alt-slash',
+							buttonClasses: ['btn', 'btn-outline-danger'],
+							contextMenuClasses: ['text-danger'],
+
+							isDisabled: (row) => {
+								return row.role === '';
+							},
+
+							isDisabledStrictMode: true,
+
+							confirmation: function (rows) {
+								var message =
+									rows.length > 1
+										? 'Are you sure you want to unassign ' +
+										  rows.length +
+										  ' roles?'
+										: 'Are you sure you want to unassign ' +
+										  rows[0].fullName +
+										  "'s role?";
+								return {
+									title:
+										rows.length > 1
+											? 'Unassign Employees'
+											: 'Unassign Employee',
+									message: message,
+									buttons: {
+										cancel: {
+											className: 'btn-link',
+											label: 'Cancel',
+										},
+										confirm: {
+											className: 'btn-danger',
+											label: '<i class="fa fa-user-slash"></i> Unassign',
+										},
+									},
+								};
+							},
+							action: function (rows) {
+								// For sake of example, change the source data
+								window.sampleData
+									.filter((data) =>
+										rows
+											.map((row) => row.fullName)
+											.includes(data.fullName)
+									)
+									.forEach((data) => {
+										data.role = '';
+										data.location = '';
+										data.extension = '';
+										data.startDate = '';
+										data.salary = '';
+									});
+
+								// Then change the data inline without redrawing and losing state
+								myTable.rows(function (idx, data, node) {
+									if (
+										rows
+											.map((r) => r.fullName)
+											.includes(data.fullName)
+									) {
+										let rowData = myTable.row(idx).data();
+										rowData.role = '';
+										rowData.location = '';
+										rowData.extension = '';
+										rowData.startDate = '';
+										rowData.salary = '';
+										myTable.row(idx).data(rowData);
+									}
+									return false;
+								});
+							},
+						},
+
+						{
+							type: 'option',
+							title: 'Delete Employee',
+							multi: true,
+							multiTitle: 'Delete Employees',
+							iconClass: 'fa-trash',
+							buttonClasses: ['btn', 'btn-outline-danger'],
+							contextMenuClasses: ['text-danger'],
+							confirmation: function (rows) {
+								var message =
+									rows.length > 1
+										? 'Are you sure you want to delete ' +
+										  rows.length +
+										  ' employees?'
+										: 'Are you sure you want to delete ' +
+										  rows[0].fullName +
+										  '?';
+								return {
+									title:
+										rows.length > 1
+											? 'Delete Employees'
+											: 'Delete Employee',
+									message: message,
+									buttons: {
+										cancel: {
+											className: 'btn-link',
+											label: 'Cancel',
+										},
+										confirm: {
+											className: 'btn-danger',
+											label: '<i class="fa fa-trash"></i> Delete',
+										},
+									},
+								};
+							},
+							action: function (rows) {
+								// Change source data and redraw
+								window.sampleData = window.sampleData.filter(
+									(data) =>
+										!rows
+											.map((row) => row.fullName)
+											.includes(data.fullName)
+								);
+								myTable
+									.clear()
+									.rows.add(window.sampleData)
+									.draw();
+							},
+						},
+
+						{
+							type: 'divider',
+						},
+
+						// A normally hidden option that only appears for even rows. Do not render as a button/menu option unless the selected items adhere
+						{
+							type: 'option',
+							multi: false,
+							title: 'Only Visible for Accountants',
+							iconClass: 'fa-edit',
+							buttonClasses: ['btn', 'btn-outline-secondary'],
+							contextMenuClasses: ['text-secondary'],
+							action: function (row) {
+								bootbox.alert(
+									'I only appear for even Accountants!'
+								);
+							},
+
+							isHidden: function (row) {
+								return row.role != 'Accountant';
+							},
+						},
+
+						// Empty ending seperator to demonstrate that it won't render
+						{
+							type: 'divider',
+						},
+					],
+				};
+
+				// And initialize our plugin
+				myTable.contextualActions(actionOptions);
+			});
+		</script>
+	</head>
+	<body>
+		<h1>Datatables-contextual-actions Example</h1>
+		<!-- This is any custom container we want to use to hold our context buttons -->
+		<br />
+		<div id="my-button-container"></div>
+		<br />
+
+		<table id="dt" class="display" style="width: 100%"></table>
+	</body>
+</html>
