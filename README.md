@@ -138,6 +138,6 @@ $(document).ready(function () {
 # Development & Building:
 - Launch the included VSCode workspace file (`datatables-contextual-actions.code-workspace`)
 - Run `npm i` to install any dependencies
-- Perform any development and test in the `~/index.html` file
+- Perform any development and test in the `~/index.html` and `~/index_noheader.html` files
 - When you're ready to build, execute the default build task (`Ctrl + Shift + B`)
 - Test the built changes in the `~/docs/index.html` documentation/demo file

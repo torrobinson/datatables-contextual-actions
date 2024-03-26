@@ -145,7 +145,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 				}
 				else{
 					// The context menu is multi-enabled
-					
+
 					// If the user has right-clicked on a non-selected row
 					var isRowSelected = me.dt.rows({selected: true})
 											.indexes()
@@ -269,7 +269,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 		var contextMenuTopPosition = y + options.contextMenu.yoffset;
 		var contextMenuLeftPosition = x + options.contextMenu.xoffset;
 
-		
+
 		// Generate the header for the menu
 		if (options.contextMenu.headerRenderer !== false) {
 			var headerContent = '';
@@ -304,7 +304,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 				'z-index': 99999,
 			});
 
-			
+
 			// After it's been fully rendered, check if it's going off screen
 			$('#' + _ca.contextMenuId).css({
 				opacity: 1,
@@ -500,10 +500,8 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 			}
 		});
 
-		// Finally, since a non-last divider can have a "hidden" item after it that might make it still render last, remove any first/last dividers
-		menu.children(':last-child.dropdown-divider').remove();
-
-		// And since a hidden item sandwiched between two dividers can render as 2 dividers back to back, remove duplicate elements
+		// A hidden item sandwiched between two dividers can render as 2 dividers back to back, remove duplicate elements
+		// This will account for duplicate dividers at the start or end of the menu
 		menu.children().each(function () {
 			if (
 				$(this).hasClass('dropdown-divider') &&
@@ -512,6 +510,12 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 				$(this).remove();
 			}
 		});
+
+		// Finally, since a non-last divider can have "hidden" item after it that might make it still render last, remove any last dividers
+		menu.children(':last-child.dropdown-divider').remove();
+
+		// Similarly, we remove a divider that became the first item, when the header is not present
+		menu.children(':first-child.dropdown-divider').remove();
 
 		// Add the menu to the DOM
 		$('body').append(menu);
