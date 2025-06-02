@@ -468,7 +468,9 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 						typeof item.isDisabled === 'function'
 							? rows.filter((row) => !item.isDisabled(row)).length
 							: rows.length;
-					$(itemElement).append(' (' + affectedItemCount + ')');
+					if (item.showAffectedItemCount !== false) {
+						$(itemElement).append(' (' + affectedItemCount + ')');
+					}
 				}
 
 				// On click, perform the action
@@ -632,7 +634,7 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 					// Of it's just an icon, it needs a tooltip title
 					title = title;
 
-					if (item.type !== ITEMTYPE.STATIC && rows.length > 1) {
+					if (item.type !== ITEMTYPE.STATIC && rows.length > 1 && item.showAffectedItemCount !== false) {
 						// Append the count if there's multiple rows selected and we're not a static button
 						title += ' (' + affectedItemCount + ')';
 					}
@@ -671,8 +673,10 @@ jQuery.fn.dataTable.Api.register('contextualActions()', function (options) {
 					item.type !== ITEMTYPE.STATIC &&
 					rows.length > 1
 				) {
-					// Add the count of selected rows to the title, if the user doesn't want to just see the icon
-					$(itemElement).append(' (' + affectedItemCount + ')');
+					if (item.showAffectedItemCount !== false) {
+						// Add the count of selected rows to the title, if the user doesn't want to just see the icon
+						$(itemElement).append(' (' + affectedItemCount + ')');
+					}
 				}
 
 				// If we're icon- only force immediate and obvious tooltips
